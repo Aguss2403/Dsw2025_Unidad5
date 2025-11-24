@@ -1,18 +1,20 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../../auth/hook/useAuth';
+import useCart from '../../cart/hooks/useCart';
+import useGlobalSearch from '../hooks/useGlobalSearch'; // Tu nuevo hook de búsqueda
 import Button from '../../shared/components/Button';
 import SearchBar from './SearchBar';
-import Navbar from './NavBar';
 
-function Header({ onSearch, searchTerm, setSearchTerm }) {
+function Header() {
   const navigate = useNavigate();
   const { isAuthenticated, username, singout } = useAuth();
+  const { cartItems } = useCart();
   
-  // Estado para controlar si el menú desplegable está abierto
+  // Conectamos la búsqueda directamente al hook global
+  const { searchTerm, handleInputChange, handleSearch } = useGlobalSearch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // Referencia para detectar clics fuera del menú y cerrarlo
   const menuRef = useRef(null);
 
   const handleLogout = () => {
@@ -21,7 +23,7 @@ function Header({ onSearch, searchTerm, setSearchTerm }) {
     navigate('/login');
   };
 
-  // Efecto para cerrar el menú si se hace click fuera de él
+  // Cierra el menú al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -32,15 +34,27 @@ function Header({ onSearch, searchTerm, setSearchTerm }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Icono de Carrito con Badge
+  const CartIcon = () => (
+    <div className="relative text-gray-600 hover:text-purple-600 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      </svg>
+      {cartItems && cartItems.length > 0 && (
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+          {cartItems.length}
+        </span>
+      )}
+    </div>
+  );
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between gap-4">
           
-          {/* ---------------------------------------------------- */}
-          {/* 1. SECCIÓN IZQUIERDA: Logo + Navbar (Desktop)        */}
-          {/* ---------------------------------------------------- */}
-          <div className="flex items-center gap-4 lg:gap-8 shrink-0">
+          {/* 1. Logo (Izquierda) */}
+          <div className="flex items-center shrink-0">
             <div 
               className="font-bold text-2xl text-gray-900 cursor-pointer flex items-center gap-2" 
               onClick={() => navigate('/')}
@@ -50,84 +64,90 @@ function Header({ onSearch, searchTerm, setSearchTerm }) {
               </svg>
               <span className="hidden md:block">MiTienda</span>
             </div>
-            
-            {/* Navbar visible solo en pantallas medianas hacia arriba */}
-            <div className="hidden md:block">
-              <Navbar />
-            </div>
           </div>
 
-          {/* ---------------------------------------------------- */}
-          {/* 2. SECCIÓN CENTRAL: Barra de Búsqueda                */}
-          {/* ---------------------------------------------------- */}
+          {/* 2. Barra de Búsqueda (Centro - Expandible) */}
           <div className="flex-1 max-w-2xl px-2 lg:px-8">
             <SearchBar 
               value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
-              onSearch={onSearch}
+              onChange={handleInputChange} 
+              onSearch={() => handleSearch()} // Se activa al dar Enter en el SearchBar
               className="w-full"
             />
           </div>
 
-          {/* ---------------------------------------------------- */}
-          {/* 3. SECCIÓN DERECHA: Menú Hamburguesa / Usuario       */}
-          {/* ---------------------------------------------------- */}
+          {/* 3. Acciones (Derecha) */}
           <div className="flex items-center shrink-0 relative" ref={menuRef}>
             {isAuthenticated ? (
               <>
-                 {/* Nombre de usuario (Visible solo en desktop grande) */}
-                <span className="text-sm font-medium text-gray-700 mr-4 hidden lg:block">
-                  Hola, {username}
-                </span>
+                {/* Desktop: Todo visible */}
+                <div className="hidden md:flex items-center gap-6">
+                  <Link to="/cart" title="Ver Carrito">
+                    <CartIcon />
+                  </Link>
 
-                {/* Botón Hamburguesa */}
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="p-2 rounded-md hover:bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                  </svg>
-                </button>
+                  <span className="text-sm font-medium text-gray-700">
+                    Hola, {username}
+                  </span>
 
-                {/* Dropdown Menu */}
-                {isMenuOpen && (
-                  <div className="absolute right-0 top-12 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5">
-                    {/* En Mobile, mostramos aquí los links de navegación que se ocultaron */}
-                    <div className="md:hidden border-b border-gray-100 mb-1 pb-1">
-                      <button 
-                        onClick={() => navigate('/')} 
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  <Button variant="secondary" size="sm" onClick={handleLogout}>
+                    Cerrar Sesión
+                  </Button>
+                </div>
+
+                {/* Mobile: Hamburguesa */}
+                <div className="md:hidden">
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="p-2 rounded-md hover:bg-gray-100 text-gray-600 focus:outline-none"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                  </button>
+
+                  {isMenuOpen && (
+                    <div className="absolute right-0 top-12 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100 text-xs text-gray-500">
+                        Hola, {username}
+                      </div>
+                      
+                      {/* Enlaces Mobile */}
+                      <Link 
+                        to="/" 
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsMenuOpen(false)}
                       >
                         Productos
-                      </button>
-                      <button 
-                        onClick={() => navigate('/cart')} 
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      </Link>
+                      
+                      <Link 
+                        to="/cart" 
+                        className="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsMenuOpen(false)}
                       >
-                        Carrito
+                        <span>Carrito</span>
+                        {cartItems.length > 0 && <span className="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full">{cartItems.length}</span>}
+                      </Link>
+
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
+                      >
+                        Cerrar Sesión
                       </button>
                     </div>
-
-                    {/* Opciones de Usuario */}
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             ) : (
-              // Si no está autenticado, mostramos botones de acción directa
+              // No autenticado
               <div className="flex gap-2">
                 <Button variant="secondary" size="sm" onClick={() => navigate('/login')}>Ingresar</Button>
                 <Button size="sm" onClick={() => navigate('/register')} className="hidden sm:block">Registro</Button>
               </div>
             )}
           </div>
-
         </div>
       </div>
     </header>

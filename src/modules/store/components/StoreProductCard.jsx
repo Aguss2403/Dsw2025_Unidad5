@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import Button from '../../shared/components/Button';
 import diegoImage from '../../../assets/images/diego.png';
+import useCart from '../../cart/hooks/useCart';
 
 function StoreProductCard({ product }) {
   const [quantity, setQuantity] = useState(0);
+  const { addItem } = useCart();
   const isDiego = product.description === 'La del Diego';
   
   const handleIncrement = () => {
@@ -16,32 +18,19 @@ function StoreProductCard({ product }) {
 
   const handleAddToCart = () => {
     if (quantity < 1) {
-      alert('Debes seleccionar al menos 1 producto');
-      return;
+       alert('Debes seleccionar al menos 1 producto');
+        return;
     }
 
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-    // Check if product already exists in cart
-    const existingItemIndex = existingCart.findIndex(item => item.id === product.id);
-    
-    if (existingItemIndex >= 0) {
-      // Update quantity
-      existingCart[existingItemIndex].quantity += quantity;
-    } else {
-      // Add new item
-      existingCart.push({
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.currentUnitPrice,
-        quantity: quantity
-      });
-    }
-    
-    // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(existingCart));
+    const productToAdd = {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.currentUnitPrice,
+      quantity: quantity
+    };
+
+    addItem(productToAdd, quantity);
     
     // Show feedback
     alert(`${quantity} ${product.name} agregado(s) al carrito`);

@@ -9,6 +9,9 @@ import Home from './modules/home/pages/Home';
 import ListProductsPage from './modules/products/pages/ListProductsPage';
 import CreateProductPage from './modules/products/pages/CreateProductPage';
 import StorePage from './modules/store/pages/StorePage';
+import CartPage from './modules/cart/pages/CartPage';
+import { CartProvider } from './modules/cart/context/CartContext'; 
+
 
 function App() {
   const router = createBrowserRouter([
@@ -31,6 +34,13 @@ function App() {
           <Dashboard />
         </ProtectedRoute>
       ),
+    },
+    {
+      path: '/cart',
+      element: <CartPage />,
+      },
+    {
+      path: '/admin',
       children: [
         {
           path: '/admin/home',
@@ -54,7 +64,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </AuthProvider>
   );
 }
