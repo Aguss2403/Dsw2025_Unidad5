@@ -50,20 +50,20 @@ function LoginForm() {
         sm:rounded-lg
         sm:shadow-lg
       '
-    onSubmit={handleSubmit(onValid)}
+      onSubmit={handleSubmit(onValid)}
     >
       <Input
         label='Usuario'
-        { ...register('username', {
+        {...register('username', {
           required: 'Usuario es obligatorio',
-        }) }
+        })}
         error={errors.username?.message}
       />
       <Input
         label='Contraseña'
-        { ...register('password', {
+        {...register('password', {
           required: 'Contraseña es obligatorio',
-        }) }
+        })}
         type='password'
         error={errors.password?.message}
       />

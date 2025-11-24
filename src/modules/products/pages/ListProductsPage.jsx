@@ -13,13 +13,13 @@ const productStatus = {
 function ListProductsPage() {
   const navigate = useNavigate();
 
-  const [ searchTerm, setSearchTerm ] = useState('');
-  const [ status, setStatus ] = useState(productStatus.ALL);
-  const [ pageNumber, setPageNumber ] = useState(1);
-  const [ pageSize, setPageSize ] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [status, setStatus] = useState(productStatus.ALL);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
-  const [ total, setTotal ] = useState(0);
-  const [ products, setProducts ] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [products, setProducts] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -30,8 +30,8 @@ function ListProductsPage() {
 
       if (error) throw error;
 
-      setTotal(data.total);
-      setProducts(data.productItems);
+      setTotal(data?.total || 0);
+      setProducts(data?.items || []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -110,7 +110,7 @@ function ListProductsPage() {
         </button>
         <span>{pageNumber} / {totalPages}</span>
         <button
-          disabled={ pageNumber === totalPages }
+          disabled={pageNumber === totalPages}
           onClick={() => setPageNumber(pageNumber + 1)}
           className='bg-gray-200 disabled:bg-gray-100'
         >
