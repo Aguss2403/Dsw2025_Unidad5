@@ -8,22 +8,13 @@ import ListOrdersPage from './modules/orders/pages/ListOrdersPage';
 import Home from './modules/home/pages/Home';
 import ListProductsPage from './modules/products/pages/ListProductsPage';
 import CreateProductPage from './modules/products/pages/CreateProductPage';
+import StorePage from './modules/store/pages/StorePage';
 
 function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <><Outlet /></>,
-      children: [
-        {
-          path: '/',
-          element: <Navigate to="/login" />,
-        },
-        {
-          path: '/cart',
-          element: <>Carrito de compras</>,
-        },
-      ],
+      element: <StorePage />,
     },
     {
       path: '/login',
