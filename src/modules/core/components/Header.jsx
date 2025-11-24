@@ -78,8 +78,8 @@ function Header({ onSearch, searchTerm, setSearchTerm }) {
                  {/* Nombre de usuario (Visible solo en desktop grande) */}
                 <span className="text-sm font-medium text-gray-700 mr-4 hidden lg:block">
                   Hola, {username}
+                  {console.log(username)}
                 </span>
-
                 {/* Botón Hamburguesa */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
