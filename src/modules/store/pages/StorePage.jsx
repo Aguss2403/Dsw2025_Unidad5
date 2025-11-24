@@ -9,6 +9,9 @@ function StorePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const navigate = useNavigate();
   const { isAuthenticated, username, singout } = useAuth();
 
@@ -16,18 +19,37 @@ function StorePage() {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async (searchTerm = null) => {
+  const fetchProducts = async (searchTerm = null, page = 1) => {
     setLoading(true);
-    const { data, error } = await getStoreProducts(searchTerm);
+    const { data, error } = await getStoreProducts(searchTerm, page, 20);
     if (data) {
       setProducts(data.items || []);
+      setTotalItems(data.total || 0);
+      setTotalPages(Math.ceil((data.total || 0) / 20));
     }
     setLoading(false);
   };
 
   const handleSearch = (e) => {
     if (e.key === 'Enter') {
-      fetchProducts(search);
+      setCurrentPage(1);
+      fetchProducts(search, 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchProducts(search, nextPage);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      const prevPage = currentPage - 1;
+      setCurrentPage(prevPage);
+      fetchProducts(search, prevPage);
     }
   };
 
@@ -99,11 +121,43 @@ function StorePage() {
         {loading ? (
           <p className="text-center text-gray-500">Cargando productos...</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <StoreProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <StoreProductCard key={product.id} product={product} />
+              ))}
+            </div>
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-gray-600">
+                  Mostrando {products.length} de {totalItems} productos
+                </p>
+                <div className="flex items-center gap-4">
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                  >
+                    Anterior
+                  </Button>
+                  <span className="text-sm text-gray-600">
+                    Página {currentPage} de {totalPages}
+                  </span>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente
+                  </Button>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
