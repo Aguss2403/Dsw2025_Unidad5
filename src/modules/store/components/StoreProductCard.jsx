@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../../shared/components/Button';
 import diegoImage from '../../../assets/images/diego.png';
 import useCart from '../../cart/hooks/useCart';
+import productImage from '../../../assets/images/product.png';
 
 function StoreProductCard({ product }) {
   const [quantity, setQuantity] = useState(0);

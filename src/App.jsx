@@ -34,31 +34,32 @@ function App() {
           <Dashboard />
         </ProtectedRoute>
       ),
+      children: [
+        {
+          index: true,
+          element: <Navigate to="/admin/home" replace />,
+        },
+        {
+          path: 'home',
+          element: <Home />,
+        },
+        {
+          path: 'products',
+          element: <ListProductsPage />,
+        },
+        {
+          path: 'products/create',
+          element: <CreateProductPage />,
+        },
+        {
+          path: 'orders',
+          element: <ListOrdersPage />,
+        },
+      ],
     },
     {
       path: '/cart',
       element: <CartPage />,
-      },
-    {
-      path: '/admin',
-      children: [
-        {
-          path: '/admin/home',
-          element: <Home />,
-        },
-        {
-          path: '/admin/products',
-          element: <ListProductsPage />,
-        },
-        {
-          path: '/admin/products/create',
-          element: <CreateProductPage />,
-        },
-        {
-          path: '/admin/orders',
-          element: <ListOrdersPage />,
-        },
-      ],
     },
   ]);
 
