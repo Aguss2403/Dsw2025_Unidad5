@@ -45,7 +45,7 @@ function RegisterForm() {
       '
       onSubmit={handleSubmit(onValid)}
     >
-      <h2 className="text-2xl font-bold text-center mb-4">Registro</h2>
+      <h2 className="text-2xl text-center mb-4">Registro</h2>
       <Input
         label='Usuario'
         {...register('username', {

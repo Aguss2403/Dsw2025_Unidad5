@@ -8,22 +8,16 @@ import ListOrdersPage from './modules/orders/pages/ListOrdersPage';
 import Home from './modules/home/pages/Home';
 import ListProductsPage from './modules/products/pages/ListProductsPage';
 import CreateProductPage from './modules/products/pages/CreateProductPage';
+import StorePage from './modules/store/pages/StorePage';
+import CartPage from './modules/cart/pages/CartPage';
+import { CartProvider } from './modules/cart/context/CartContext'; 
+
 
 function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <><Outlet /></>,
-      children: [
-        {
-          path: '/',
-          element: <Navigate to="/login" />,
-        },
-        {
-          path: '/cart',
-          element: <>Carrito de compras</>,
-        },
-      ],
+      element: <StorePage />,
     },
     {
       path: '/login',
@@ -42,28 +36,38 @@ function App() {
       ),
       children: [
         {
-          path: '/admin/home',
+          index: true,
+          element: <Navigate to="/admin/home" replace />,
+        },
+        {
+          path: 'home',
           element: <Home />,
         },
         {
-          path: '/admin/products',
+          path: 'products',
           element: <ListProductsPage />,
         },
         {
-          path: '/admin/products/create',
+          path: 'products/create',
           element: <CreateProductPage />,
         },
         {
-          path: '/admin/orders',
+          path: 'orders',
           element: <ListOrdersPage />,
         },
       ],
+    },
+    {
+      path: '/cart',
+      element: <CartPage />,
     },
   ]);
 
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </AuthProvider>
   );
 }

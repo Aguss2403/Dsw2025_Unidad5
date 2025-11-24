@@ -41,15 +41,17 @@ function AuthProvider({ children }) {
     localStorage.setItem('token', data);
     setIsAuthenticated(true);
 
+    let roles = [];
     try {
       const decoded = jwtDecode(data);
       const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
-      setRoles(Array.isArray(roleClaim) ? roleClaim : [roleClaim]);
+      roles = Array.isArray(roleClaim) ? roleClaim : [roleClaim];
+      setRoles(roles);
     } catch (e) {
       setRoles([]);
     }
 
-    return { error: null };
+    return { error: null, roles };
   };
 
   return (
