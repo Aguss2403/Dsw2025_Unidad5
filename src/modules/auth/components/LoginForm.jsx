@@ -20,14 +20,19 @@ function LoginForm() {
 
   const onValid = async (formData) => {
     try {
-      const { error } = await singin(formData.username, formData.password);
+      const { error, roles } = await singin(formData.username, formData.password);
 
       if (error) {
         setErrorMessage(error.frontendErrorMessage);
         return;
       }
+      console.log('Roles del usuario:', roles);
 
-      navigate('/');
+      if (roles.includes('admin')) {
+        navigate('/admin/home');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       if (error?.response?.data?.code) {
         setErrorMessage(frontendErrorMessage[error?.response?.data?.code]);

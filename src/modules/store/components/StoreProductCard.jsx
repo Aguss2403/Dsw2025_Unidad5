@@ -62,7 +62,7 @@ function StoreProductCard({ product }) {
         )}
       </div>
       <div>
-        <h3 className="font-medium text-gray-900">{product.name}</h3>
+        <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
         <p className="text-gray-500 text-sm">{product.description}</p>
       </div>
       <div className="mt-auto flex flex-col gap-2">
@@ -83,7 +83,7 @@ function StoreProductCard({ product }) {
               +
             </button>
           </div>
-          <Button size="sm" onClick={handleAddToCart}>Agregar</Button>
+          <Button size="xs" onClick={handleAddToCart}>Agregar</Button>
         </div>
       </div>
     </div>
