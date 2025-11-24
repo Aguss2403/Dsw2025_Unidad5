@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import Button from '../../shared/components/Button';
+// Asegúrate de que las rutas a las imágenes sean correctas en tu proyecto
 import diegoImage from '../../../assets/images/diego.png';
-import useCart from '../../cart/hooks/useCart';
 import productImage from '../../../assets/images/product.png';
+import useCart from '../../cart/hooks/useCart';
 
 function StoreProductCard({ product }) {
   const [quantity, setQuantity] = useState(0);
   const { addItem } = useCart();
   const isDiego = product.description === 'La del Diego';
-  
+
   const handleIncrement = () => {
     setQuantity(prev => prev + 1);
   };
@@ -19,25 +20,31 @@ function StoreProductCard({ product }) {
 
   const handleAddToCart = () => {
     if (quantity < 1) {
-       alert('Debes seleccionar al menos 1 producto');
-        return;
+      // Aquí está bien usar alert o mejor un mensaje de error en UI
+      alert('Debes seleccionar al menos 1 producto'); 
+      return;
     }
 
     const productToAdd = {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.currentUnitPrice,
-      quantity: quantity
+      price: product.currentUnitPrice
     };
 
+    // 1. Agregar el item
     addItem(productToAdd, quantity);
-    
-    // Show feedback
-    alert(`${quantity} ${product.name} agregado(s) al carrito`);
-    
-    // Reset quantity
+
+    // 2. Resetear la cantidad inmediatamente
     setQuantity(0);
+
+    // 3. Opcional: Notificar SIN bloquear (ej: console.log o un toast personalizado)
+    console.log(`${quantity} ${product.name} agregado(s) al carrito`);
+    
+    // Si realmente necesitas el alert, ponlo dentro de un setTimeout para que no bloquee
+    // el ciclo de eventos actual y permita que React actualice el estado primero,
+    // aunque lo ideal es eliminarlo.
+    // setTimeout(() => alert('Producto agregado'), 100);
   };
 
   return (
@@ -48,7 +55,6 @@ function StoreProductCard({ product }) {
           alt={product.name} 
           className="w-full h-full object-cover" 
         />
-        
       </div>
       <div>
         <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
@@ -72,7 +78,10 @@ function StoreProductCard({ product }) {
               +
             </button>
           </div>
-          <Button size="xs" onClick={handleAddToCart}>Agregar</Button>
+          {/* Deshabilitar el botón si la cantidad es 0 es una buena práctica de UX */}
+          <Button size="xs" onClick={handleAddToCart} disabled={quantity === 0}>
+            Agregar
+          </Button>
         </div>
       </div>
     </div>
