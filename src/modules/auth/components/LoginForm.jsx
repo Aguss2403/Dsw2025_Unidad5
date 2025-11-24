@@ -24,11 +24,10 @@ function LoginForm() {
 
       if (error) {
         setErrorMessage(error.frontendErrorMessage);
-
         return;
       }
 
-      navigate('/admin/home');
+      navigate('/');
     } catch (error) {
       if (error?.response?.data?.code) {
         setErrorMessage(frontendErrorMessage[error?.response?.data?.code]);

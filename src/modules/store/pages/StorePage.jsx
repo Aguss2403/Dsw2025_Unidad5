@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/Button';
-import Input from '../../shared/components/Input';
 import StoreProductCard from '../components/StoreProductCard';
-import { getProducts } from '../../products/services/list';
+import { getStoreProducts } from '../services/storeService';
+import useAuth from '../../auth/hook/useAuth';
 
 function StorePage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const { isAuthenticated, username, singout } = useAuth();
 
   useEffect(() => {
     fetchProducts();
@@ -17,7 +18,7 @@ function StorePage() {
 
   const fetchProducts = async (searchTerm = null) => {
     setLoading(true);
-    const { data, error } = await getProducts(searchTerm);
+    const { data, error } = await getStoreProducts(searchTerm);
     if (data) {
       setProducts(data.items || []);
     }
@@ -48,7 +49,7 @@ function StorePage() {
             </nav>
           </div>
 
-          <div className="flex-1 max-w-lg">
+          <div className="flex-1 max-w-lg hidden sm:block">
             <div className="relative">
               <input
                 type="text"
@@ -67,9 +68,29 @@ function StorePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm" onClick={() => navigate('/login')}>Iniciar Sesión</Button>
-            <Button size="sm" onClick={() => navigate('/register')}>Registrarse</Button>
+            {isAuthenticated ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium text-gray-700 hidden sm:block">Hola, {username}</span>
+                <Button variant="secondary" size="sm" onClick={singout}>Cerrar Sesión</Button>
+              </div>
+            ) : (
+              <>
+                <Button variant="secondary" size="sm" onClick={() => navigate('/login')}>Iniciar Sesión</Button>
+                <Button size="sm" onClick={() => navigate('/register')}>Registrarse</Button>
+              </>
+            )}
           </div>
+        </div>
+        {/* Mobile Search */}
+        <div className="sm:hidden px-4 pb-4">
+           <input
+                type="text"
+                className="w-full bg-white border border-gray-300 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={handleSearch}
+              />
         </div>
       </header>
 
