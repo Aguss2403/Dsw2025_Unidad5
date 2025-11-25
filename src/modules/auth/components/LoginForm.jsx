@@ -6,7 +6,7 @@ import Button from "../../shared/components/Button";
 import useAuth from "../hook/useAuth";
 import { frontendErrorMessage } from "../helpers/backendError";
 
-function LoginForm() {
+function LoginForm({ onSuccess }) {
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
@@ -15,7 +15,6 @@ function LoginForm() {
   } = useForm({ defaultValues: { username: "", password: "" } });
 
   const navigate = useNavigate();
-
   const { singin } = useAuth();
 
   const onValid = async (formData) => {
@@ -29,12 +28,18 @@ function LoginForm() {
         setErrorMessage(error.frontendErrorMessage);
         return;
       }
-      console.log("Roles del usuario:", roles);
 
-      if (roles.includes("admin")) {
-        navigate("/admin/dashboard");
+      // --- MODIFICACIÓN 1: Lógica flexible ---
+      if (onSuccess) {
+        // Si estamos en un modal, simplemente lo cerramos
+        onSuccess();
       } else {
-        navigate("/");
+        // Si estamos en la página de login, navegamos según el rol
+        if (roles && roles.includes("admin")) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
       if (error?.response?.data?.code) {
@@ -45,19 +50,16 @@ function LoginForm() {
     }
   };
 
+  // --- MODIFICACIÓN 2: Estilos dinámicos ---
+  // Si hay onSuccess (Modal), usamos estilos limpios. 
+  // Si no (Página), usamos estilos de tarjeta (shadow, bg-white, etc).
+  const formClasses = onSuccess 
+    ? "flex flex-col gap-4" // Estilo para Modal (Simple)
+    : "flex flex-col gap-10 bg-white p-8 sm:w-md sm:gap-4 sm:rounded-lg sm:shadow-lg"; // Estilo para Página (Tarjeta)
+
   return (
     <form
-      className="
-        flex
-        flex-col
-        gap-20
-        bg-white
-        p-8
-        sm:w-md
-        sm:gap-4
-        sm:rounded-lg
-        sm:shadow-lg
-      "
+      className={formClasses}
       onSubmit={handleSubmit(onValid)}
     >
       <Input
@@ -77,10 +79,19 @@ function LoginForm() {
       />
 
       <Button type="submit">Iniciar Sesión</Button>
-      <Button variant="secondary" onClick={() => navigate("/register")}>
+      
+      {/* --- MODIFICACIÓN 3: Navegación en registro --- */}
+      <Button 
+        variant="secondary" 
+        onClick={() => {
+          if (onSuccess) onSuccess(); // Cierra el modal si está abierto
+          navigate("/register");
+        }}
+      >
         Registrar Usuario
       </Button>
-      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </form>
   );
 }
