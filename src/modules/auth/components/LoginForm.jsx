@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import Input from '../../shared/components/Input';
-import Button from '../../shared/components/Button';
-import useAuth from '../hook/useAuth';
-import { frontendErrorMessage } from '../helpers/backendError';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import Input from "../../shared/components/Input";
+import Button from "../../shared/components/Button";
+import useAuth from "../hook/useAuth";
+import { frontendErrorMessage } from "../helpers/backendError";
 
 function LoginForm() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: { username: '', password: '' } });
+  } = useForm({ defaultValues: { username: "", password: "" } });
 
   const navigate = useNavigate();
 
@@ -20,30 +20,34 @@ function LoginForm() {
 
   const onValid = async (formData) => {
     try {
-      const { error, roles } = await singin(formData.username, formData.password);
+      const { error, roles } = await singin(
+        formData.username,
+        formData.password
+      );
 
       if (error) {
         setErrorMessage(error.frontendErrorMessage);
         return;
       }
-      console.log('Roles del usuario:', roles);
+      console.log("Roles del usuario:", roles);
 
-      if (roles.includes('admin')) {
-        navigate('/admin/home');
+      if (roles.includes("admin")) {
+        navigate("/admin/dashboard");
       } else {
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
       if (error?.response?.data?.code) {
         setErrorMessage(frontendErrorMessage[error?.response?.data?.code]);
       } else {
-        setErrorMessage('Llame a soporte');
+        setErrorMessage("Llame a soporte");
       }
     }
   };
 
   return (
-    <form className='
+    <form
+      className="
         flex
         flex-col
         gap-20
@@ -53,30 +57,32 @@ function LoginForm() {
         sm:gap-4
         sm:rounded-lg
         sm:shadow-lg
-      '
+      "
       onSubmit={handleSubmit(onValid)}
     >
       <Input
-        label='Usuario'
-        {...register('username', {
-          required: 'Usuario es obligatorio',
+        label="Usuario"
+        {...register("username", {
+          required: "Usuario es obligatorio",
         })}
         error={errors.username?.message}
       />
       <Input
-        label='Contraseña'
-        {...register('password', {
-          required: 'Contraseña es obligatorio',
+        label="Contraseña"
+        {...register("password", {
+          required: "Contraseña es obligatorio",
         })}
-        type='password'
+        type="password"
         error={errors.password?.message}
       />
 
-      <Button type='submit'>Iniciar Sesión</Button>
-      <Button variant='secondary' onClick={() => navigate('/register')}>Registrar Usuario</Button>
-      {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+      <Button type="submit">Iniciar Sesión</Button>
+      <Button variant="secondary" onClick={() => navigate("/register")}>
+        Registrar Usuario
+      </Button>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </form>
   );
-};
+}
 
 export default LoginForm;
