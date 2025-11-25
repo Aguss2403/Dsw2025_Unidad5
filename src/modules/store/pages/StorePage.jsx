@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import MainLayout from '../../core/components/MainLayout';
-import StoreProductCard from '../components/StoreProductCard';
-import Button from '../../shared/components/Button';
-import { getStoreProducts } from '../services/storeService';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import MainLayout from "../../core/components/MainLayout";
+import StoreProductCard from "../components/StoreProductCard";
+import Button from "../../shared/components/Button";
+import { getStoreProducts } from "../services/storeService";
 
 function StorePage() {
   // Leemos la URL para saber si hay búsqueda activa (?search=zapatillas)
   const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get('search');
+  const searchQuery = searchParams.get("search");
 
   // Estado local para productos y paginación
   const [products, setProducts] = useState([]);
@@ -22,7 +22,7 @@ function StorePage() {
     setLoading(true);
     // Pasamos el término de búsqueda (searchQuery) al servicio
     const { data } = await getStoreProducts(searchQuery, page, 20);
-    
+
     if (data) {
       setProducts(data.items || []);
       setTotalItems(data.total || 0);
@@ -43,17 +43,18 @@ function StorePage() {
     setCurrentPage(1);
   }, [searchQuery]);
 
-
   return (
     <MainLayout>
       {/* Título dinámico según búsqueda */}
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
-        {searchQuery ? `Resultados para "${searchQuery}"` : 'Catálogo de Productos'}
+        {searchQuery
+          ? `Resultados para "${searchQuery}"`
+          : "Catálogo de Productos"}
       </h1>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
-           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-lg border border-gray-100">
@@ -75,10 +76,12 @@ function StorePage() {
                 Mostrando {products.length} de {totalItems} productos
               </p>
               <div className="flex gap-2">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(1, prev - 1))
+                  }
                   disabled={currentPage === 1}
                 >
                   Anterior
@@ -86,10 +89,12 @@ function StorePage() {
                 <span className="flex items-center px-4 font-medium text-gray-700">
                   Página {currentPage} de {totalPages}
                 </span>
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                  }
                   disabled={currentPage === totalPages}
                 >
                   Siguiente

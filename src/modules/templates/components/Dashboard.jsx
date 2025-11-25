@@ -15,6 +15,10 @@ function Dashboard() {
     navigate("/login");
   };
 
+  const navigateToStore = () => {
+    navigate("../");
+  };
+
   const getLinkStyles = ({ isActive }) =>
     `
       pl-4 w-full block  pt-4 pb-4 rounded-4xl transition hover:bg-gray-100
@@ -27,6 +31,15 @@ function Dashboard() {
       onClick={logout}
     >
       Cerrar sesión
+    </Button>
+  );
+
+  const renderStoreButton = (mobile = false) => (
+    <Button
+      className={`${mobile ? "block w-full sm:hidden" : "hidden sm:block"}`}
+      onClick={navigateToStore}
+    >
+      Tienda
     </Button>
   );
 
@@ -44,50 +57,60 @@ function Dashboard() {
     >
       <header
         className="
-          flex
-          items-center
-          justify-between
-          p-4
-          shadow
-          rounded
-          bg-white
-
-          sm:col-span-2
-        "
+        flex
+        items-center
+        justify-between
+        p-4
+        shadow
+        rounded
+        bg-white
+        sm:col-span-2"
       >
-        <span>Mi Dashboard</span>
-        {renderLogoutButton()}
-        <button
-          className="
-            bg-transparent
-            border-none
-            shadow-none
+        {/* 1. Elemento Izquierda: El Título */}
+        <span className="font-semibold text-lg">Mi Dashboard</span>
 
-            sm:hidden
-          "
-          onClick={() => setOpenMenu(!openMenu)}
-        >
-          {openMenu ? <span>&#215;</span> : <span>&#9776;</span>}
-        </button>
+        {/* 2. Elemento Derecha: Contenedor para los botones juntos */}
+        <div className="flex items-center gap-2">
+          {" "}
+          {/* gap-2 separa los botones entre sí */}
+          {renderStoreButton()}
+          {renderLogoutButton()}
+          {/* Botón de Menú (Hamburguesa) - Solo visible en móvil */}
+          <button
+            className="
+          bg-transparent
+          border-none
+          shadow-none
+          sm:hidden
+          ml-2"
+            onClick={() => setOpenMenu(!openMenu)}
+          >
+            {openMenu ? (
+              <span className="text-xl">&#215;</span>
+            ) : (
+              <span className="text-xl">&#9776;</span>
+            )}
+          </button>
+        </div>
       </header>
       <aside
         className={`
-          absolute
-          top-0
-          bottom-0
-          bg-white
-          w-64
-          p-6
-          ${openMenu ? "left-0" : "left-[-256px]"}
-          rounded
-          shadow
-          flex
-          flex-col
-          justify-between
+            absolute
+            top-0
+            bottom-0
+            bg-white
+            w-64
+            p-6
+            ${openMenu ? "left-0" : "left-[-256px]"}
+            rounded
+            shadow
+            flex
+            flex-col
+            justify-between
 
-          sm:relative
-          sm:left-0
-        `}
+            sm:relative
+            sm:left-0
+          `}
       >
         <nav>
           <ul className="flex flex-col">
@@ -113,9 +136,9 @@ function Dashboard() {
       </aside>
       <main
         className="
-          p-5
-          overflow-y-scroll
-        "
+            p-5
+            overflow-y-scroll
+          "
       >
         <Outlet />
       </main>

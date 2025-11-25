@@ -1,24 +1,27 @@
-import { createContext, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { login } from '../services/login';
+import { createContext, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { login } from "../services/login";
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     return Boolean(token);
   });
 
   const [roles, setRoles] = useState(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
+        const roleClaim =
+          decoded[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ] || decoded.role;
         return Array.isArray(roleClaim) ? roleClaim : [roleClaim];
       } catch (error) {
-        console.error('Invalid token:', error);
+        console.error("Invalid token:", error);
         return [];
       }
     }
@@ -38,18 +41,23 @@ function AuthProvider({ children }) {
       return { error };
     }
 
-    localStorage.setItem('token', data);
+    localStorage.setItem("token", data);
     setIsAuthenticated(true);
 
     let roles = [];
     try {
       const decoded = jwtDecode(data);
-      const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
+      const roleClaim =
+        decoded[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ] || decoded.role;
       roles = Array.isArray(roleClaim) ? roleClaim : [roleClaim];
       setRoles(roles);
     } catch (e) {
       setRoles([]);
     }
+
+    localStorage.setItem("user", username);
 
     return { error: null, roles };
   };
@@ -66,9 +74,6 @@ function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export {
-  AuthProvider,
-  AuthContext,
-};
+export { AuthProvider, AuthContext };

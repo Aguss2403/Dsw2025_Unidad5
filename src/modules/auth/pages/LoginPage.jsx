@@ -1,15 +1,17 @@
-import LoginForm from '../components/LoginForm';
+import LoginForm from "../components/LoginForm";
 
 function LoginPage() {
   return (
-    <div className='
+    <div
+      className="
       flex
       flex-col
       justify-center
-      h-[100dvh]
+      h-dvh
       bg-neutral-100
       sm:items-center
-    '>
+    "
+    >
       <LoginForm />
     </div>
   );

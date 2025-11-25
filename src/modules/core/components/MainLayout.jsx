@@ -1,25 +1,20 @@
-import { useState } from 'react';
-import Header from './Header';
+import { useState } from "react";
+import Header from "./Header";
 
 function MainLayout({ children }) {
-  // Estado global de UI para el layout (ej. búsqueda)
-  // Nota: Idealmente mover esto a un Context si se comparte entre páginas
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = () => {
-    // Aquí podrías disparar un evento o usar un contexto
-    // Por ahora, pasamos la lógica hacia abajo
     console.log("Buscando:", searchTerm);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-      
       {/* Header fijo o sticky */}
-      <Header 
-        searchTerm={searchTerm} 
-        setSearchTerm={setSearchTerm} 
-        onSearch={handleSearch} 
+      <Header
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onSearch={handleSearch}
       />
 
       {/* Contenido Principal Dinámico */}
