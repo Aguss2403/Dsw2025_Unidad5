@@ -40,11 +40,7 @@ function StoreProductCard({ product }) {
 
     // 3. Opcional: Notificar SIN bloquear (ej: console.log o un toast personalizado)
     console.log(`${quantity} ${product.name} agregado(s) al carrito`);
-    
-    // Si realmente necesitas el alert, ponlo dentro de un setTimeout para que no bloquee
-    // el ciclo de eventos actual y permita que React actualice el estado primero,
-    // aunque lo ideal es eliminarlo.
-    // setTimeout(() => alert('Producto agregado'), 100);
+   
   };
 
   return (

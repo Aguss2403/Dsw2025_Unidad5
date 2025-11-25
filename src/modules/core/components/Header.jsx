@@ -140,7 +140,7 @@ function Header() {
 
                 {/* {console.log("username  " + username)} */}
                 <span className="text-sm font-medium text-gray-700">
-                  Hola, {localStorage.getItem("user")}
+                  Hola, {localStorage.getItem("user") || "Invitado"}
                 </span>
 
                 {renderDashboardButton()}
@@ -173,7 +173,7 @@ function Header() {
                 {isMenuOpen && (
                   <div className="absolute right-0 top-12 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5 z-50">
                     <div className="px-4 py-2 border-b border-gray-100 text-xs text-gray-500">
-                      Hola, {user}
+                      Hola, {localStorage.getItem("user") || "Invitado"}
                     </div>
 
                     {/* Enlaces Mobile */}
