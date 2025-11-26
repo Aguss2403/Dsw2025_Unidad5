@@ -1,12 +1,46 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../../core/components/MainLayout";
 import CartItem from "../components/CartItem";
 import useCart from "../hooks/useCart";
+import useAuth from "../../auth/hook/useAuth";
 import Button from "../../shared/components/Button";
+import LoginModal from "../../auth/components/LoginModal";
+import RegisterModal from "../../auth/components/RegisterModal";
 
 function CartPage() {
-  const { cartItems, total, removeItem, updateQuantity } = useCart();
+  const { cartItems, total, removeItem, updateQuantity, checkout } = useCart();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const handleCheckout = async () => {
+    if (!isAuthenticated) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    setCheckoutLoading(true);
+    const { error } = await checkout(); // customerId is handled in context
+    setCheckoutLoading(false);
+
+    if (error) {
+      alert(
+        "Error al finalizar la compra: " +
+          (error.message || "Error desconocido")
+      );
+    } else {
+      alert("¡Compra realizada con éxito!");
+      navigate("/"); // Or wherever you want to redirect
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoginModalOpen(false);
+    // Optionally auto-trigger checkout here, or let user click again
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -63,21 +97,19 @@ function CartPage() {
           </h3>
 
           <div className="space-y-3 mb-6">
-            {/* <div className="flex justify-between text-gray-600">
-              <span>Subtotal</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Envío</span>
-              <span className="text-green-600 font-medium">Gratis</span>
-            </div> */}
             <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-100">
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
 
-          <Button className="w-full py-3 text-lg">Finalizar Compra</Button>
+          <Button
+            className="w-full py-3 text-lg"
+            onClick={handleCheckout}
+            disabled={checkoutLoading}
+          >
+            {checkoutLoading ? "Procesando..." : "Finalizar Compra"}
+          </Button>
 
           <button
             onClick={() => navigate("/")}
@@ -87,6 +119,25 @@ function CartPage() {
           </button>
         </div>
       </div>
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onSwitchToRegister={() => {
+          setIsLoginModalOpen(false);
+          setIsRegisterModalOpen(true);
+        }}
+        onSuccess={handleLoginSuccess}
+      />
+
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onSwitchToLogin={() => {
+          setIsRegisterModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
+      />
     </MainLayout>
   );
 }

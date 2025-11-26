@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { createOrder } from "../services/createOrder";
 
 export const CartContext = createContext();
 
@@ -60,6 +61,38 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
+  const checkout = async (customerId, notes = "") => {
+    if (cartItems.length === 0)
+      return { error: { message: "El carrito está vacío" } };
+
+    const idToUse = customerId || localStorage.getItem("customerId");
+
+    if (!idToUse) {
+      return {
+        error: {
+          message: "Usuario no autenticado o ID de cliente no encontrado",
+        },
+      };
+    }
+
+    const orderPayload = {
+      customerId: idToUse,
+      notes,
+      orderItems: cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    const { data, error } = await createOrder(orderPayload);
+
+    if (!error) {
+      clearCart();
+    }
+
+    return { data, error };
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -69,6 +102,7 @@ export const CartProvider = ({ children }) => {
         removeItem,
         updateQuantity,
         clearCart,
+        checkout,
       }}
     >
       {children}

@@ -10,28 +10,9 @@ function AuthProvider({ children }) {
     return Boolean(token);
   });
 
-  const [roles, setRoles] = useState(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const roleClaim =
-          decoded[
-            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-          ] || decoded.role;
-        return Array.isArray(roleClaim) ? roleClaim : [roleClaim];
-      } catch (error) {
-        console.error("Invalid token:", error);
-        return [];
-      }
-    }
-    return [];
-  });
-
   const singout = () => {
     localStorage.clear();
     setIsAuthenticated(false);
-    setRoles([]);
   };
 
   const singin = async (username, password) => {
@@ -41,32 +22,37 @@ function AuthProvider({ children }) {
       return { error };
     }
 
-    localStorage.setItem("token", data);
+    const {
+      token,
+      firstName,
+      username: returnedUsername,
+      role,
+      lastName,
+      email,
+      phoneNumber,
+      address,
+      customerId,
+      id,
+    } = data;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("name", firstName || returnedUsername);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phoneNumber", phoneNumber);
+    localStorage.setItem("address", address);
+    localStorage.setItem("customerId", customerId);
+    localStorage.setItem("userId", id);
+    localStorage.setItem("role", role);
+
     setIsAuthenticated(true);
-
-    let roles = [];
-    try {
-      const decoded = jwtDecode(data);
-      const roleClaim =
-        decoded[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ] || decoded.role;
-      roles = Array.isArray(roleClaim) ? roleClaim : [roleClaim];
-      setRoles(roles);
-    } catch (e) {
-      setRoles([]);
-    }
-
-    localStorage.setItem("user", username);
-
-    return { error: null, roles };
+    return { error: null };
   };
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        roles,
         singin,
         singout,
       }}

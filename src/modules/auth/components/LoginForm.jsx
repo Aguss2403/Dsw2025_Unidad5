@@ -19,10 +19,7 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
 
   const onValid = async (formData) => {
     try {
-      const { error, roles } = await singin(
-        formData.username,
-        formData.password
-      );
+      const { error } = await singin(formData.username, formData.password);
 
       if (error) {
         setErrorMessage(error.frontendErrorMessage);
@@ -35,7 +32,7 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
         onSuccess();
       } else {
         // Si estamos en la página de login, navegamos según el rol
-        if (roles && roles.includes("admin")) {
+        if (localStorage.getItem("role") === "admin") {
           navigate("/admin/dashboard");
         } else {
           navigate("/");
@@ -51,17 +48,14 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
   };
 
   // --- MODIFICACIÓN 2: Estilos dinámicos ---
-  // Si hay onSuccess (Modal), usamos estilos limpios. 
+  // Si hay onSuccess (Modal), usamos estilos limpios.
   // Si no (Página), usamos estilos de tarjeta (shadow, bg-white, etc).
-  const formClasses = onSuccess 
+  const formClasses = onSuccess
     ? "flex flex-col gap-4" // Estilo para Modal (Simple)
     : "flex flex-col gap-6 sm:gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg"; // Estilo para Página (Tarjeta)
 
   return (
-    <form
-      className={formClasses}
-      onSubmit={handleSubmit(onValid)}
-    >
+    <form className={formClasses} onSubmit={handleSubmit(onValid)}>
       <Input
         label="Usuario"
         {...register("username", {
@@ -79,10 +73,10 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
       />
 
       <Button type="submit">Iniciar Sesión</Button>
-      
+
       {/* --- MODIFICACIÓN 3: Navegación en registro --- */}
-      <Button 
-        variant="secondary" 
+      <Button
+        variant="secondary"
         onClick={() => {
           if (onSuccess) onSuccess(); // Cierra el modal si está abierto
           navigate("/register");
@@ -90,7 +84,7 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
       >
         Registrar Usuario
       </Button>
-      
+
       {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </form>
   );

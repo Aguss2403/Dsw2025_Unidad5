@@ -1,15 +1,29 @@
-import { Link, useNavigate } from 'react-router-dom';
-import Button from '../../../shared/components/Button';
-import CartIcon from './CartIcon';
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../../shared/components/Button";
+import CartIcon from "./CartIcon";
 
-function UserMenuDesktop({ isAuthenticated, username, isAdmin, onLogin, onRegister, onLogout }) {
+function UserMenuDesktop({
+  isAuthenticated,
+  username,
+  isAdmin,
+  onLogin,
+  onRegister,
+  onLogout,
+}) {
   const navigate = useNavigate();
 
   if (!isAuthenticated) {
     return (
-      <div className="hidden md:flex gap-2">
-        <Button variant="secondary" size="sm" onClick={onLogin}>Ingresar</Button>
-        <Button size="sm" onClick={onRegister}>Registro</Button>
+      <div className="hidden md:flex item-center gap-6">
+        <Link to="/cart" title="Ver Carrito">
+          <CartIcon />
+        </Link>
+        <Button variant="secondary" size="sm" onClick={onLogin}>
+          Ingresar
+        </Button>
+        <Button size="sm" onClick={onRegister}>
+          Registro
+        </Button>
       </div>
     );
   }
@@ -19,13 +33,15 @@ function UserMenuDesktop({ isAuthenticated, username, isAdmin, onLogin, onRegist
       <Link to="/cart" title="Ver Carrito">
         <CartIcon />
       </Link>
-      
-      <span className="text-sm font-medium text-gray-700">Hola, {username}</span>
+
+      <span className="text-sm font-medium text-gray-700">
+        Hola, {localStorage.getItem("name")}
+      </span>
 
       {isAdmin && (
-        <Button 
-          size="sm" 
-          onClick={() => navigate('/admin/dashboard')}
+        <Button
+          size="sm"
+          onClick={() => navigate("/admin/dashboard")}
           className="bg-purple-100 text-purple-700 border-purple-200 hover:bg-purple-200"
         >
           Dashboard
