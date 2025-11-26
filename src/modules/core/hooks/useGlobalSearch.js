@@ -6,7 +6,6 @@ const useGlobalSearch = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
 
   useEffect(() => {
@@ -15,9 +14,11 @@ const useGlobalSearch = () => {
 
   const handleSearch = (term) => {
     const value = term !== undefined ? term : searchTerm;
+
     if (!value.trim()) {
       searchParams.delete('search');
       setSearchParams(searchParams);
+
       return;
     }
 
@@ -35,7 +36,7 @@ const useGlobalSearch = () => {
   return {
     searchTerm,
     handleInputChange,
-    handleSearch
+    handleSearch,
   };
 };
 

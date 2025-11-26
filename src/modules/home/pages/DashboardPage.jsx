@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';  
+import { useEffect, useState } from 'react';
 import Card from '../../shared/components/Card';
 import { getProducts } from '../../products/services/list';
 import { listOrders } from '../../orders/services/listOrders';
@@ -10,11 +10,13 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const productsResponse = await getProducts();
+
       if (productsResponse.data) {
         setProductsCount(productsResponse.data.total);
       }
 
       const ordersResponse = await listOrders();
+
       if (ordersResponse.data) {
         setOrdersCount(ordersResponse.data.length);
       }

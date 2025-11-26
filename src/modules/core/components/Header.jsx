@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../auth/hook/useAuth";
-import useGlobalSearch from "../hooks/useGlobalSearch";
-import SearchBar from "./SearchBar";
-import LoginModal from "../../auth/components/LoginModal";
-import RegisterModal from "../../auth/components/RegisterModal";
-import UserMenuDesktop from "./header/UserMenuDesktop";
-import UserMenuMobile from "./header/UserMenuMobile";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../auth/hook/useAuth';
+import useGlobalSearch from '../hooks/useGlobalSearch';
+import SearchBar from './SearchBar';
+import LoginModal from '../../auth/components/LoginModal';
+import RegisterModal from '../../auth/components/RegisterModal';
+import UserMenuDesktop from './header/UserMenuDesktop';
+import UserMenuMobile from './header/UserMenuMobile';
 
 function Header() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
-  const isAdmin = localStorage.getItem("role") === "admin";
+  const isAdmin = localStorage.getItem('role') === 'admin';
 
   // Funciones de control de modales
   const openLogin = () => {
@@ -32,7 +32,7 @@ function Header() {
 
   const handleLogout = () => {
     singout();
-    navigate("/");
+    navigate('/');
   };
 
   // Props comunes para pasar a los menús
@@ -53,7 +53,7 @@ function Header() {
             {/* Logo */}
             <div
               className="flex items-center shrink-0 cursor-pointer"
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

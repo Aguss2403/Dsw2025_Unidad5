@@ -3,38 +3,38 @@ import {
   Outlet,
   RouterProvider,
   Navigate,
-} from "react-router-dom";
-import { AuthProvider } from "./modules/auth/context/AuthProvider";
-import LoginPage from "./modules/auth/pages/LoginPage";
-import RegisterPage from "./modules/auth/pages/RegisterPage";
-import Dashboard from "./modules/templates/components/Dashboard";
-import ProtectedRoute from "./modules/auth/components/ProtectedRoute";
-import ListOrdersPage from "./modules/orders/pages/ListOrdersPage";
-import DashboardPage from "./modules/home/pages/DashboardPage";
-import ListProductsPage from "./modules/products/pages/ListProductsPage";
-import CreateProductPage from "./modules/products/pages/CreateProductPage";
-import StorePage from "./modules/store/pages/StorePage";
-import CartPage from "./modules/cart/pages/CartPage";
-import { CartProvider } from "./modules/cart/context/CartContext";
+} from 'react-router-dom';
+import { AuthProvider } from './modules/auth/context/AuthProvider';
+import LoginPage from './modules/auth/pages/LoginPage';
+import RegisterPage from './modules/auth/pages/RegisterPage';
+import Dashboard from './modules/templates/components/Dashboard';
+import ProtectedRoute from './modules/auth/components/ProtectedRoute';
+import ListOrdersPage from './modules/orders/pages/ListOrdersPage';
+import DashboardPage from './modules/home/pages/DashboardPage';
+import ListProductsPage from './modules/products/pages/ListProductsPage';
+import CreateProductPage from './modules/products/pages/CreateProductPage';
+import StorePage from './modules/store/pages/StorePage';
+import CartPage from './modules/cart/pages/CartPage';
+import { CartProvider } from './modules/cart/context/CartContext';
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <StorePage />,
     },
     {
-      path: "/login",
+      path: '/login',
       element: <LoginPage />,
     },
     {
-      path: "/register",
+      path: '/register',
       element: <RegisterPage />,
     },
     {
-      path: "/admin",
+      path: '/admin',
       element: (
-        <ProtectedRoute roles={["admin"]}>
+        <ProtectedRoute roles={['admin']}>
           <Dashboard />
         </ProtectedRoute>
       ),
@@ -44,25 +44,25 @@ function App() {
           element: <Navigate to="/admin/dashboard" replace />,
         },
         {
-          path: "dashboard",
+          path: 'dashboard',
           element: <DashboardPage />,
         },
         {
-          path: "products",
+          path: 'products',
           element: <ListProductsPage />,
         },
         {
-          path: "products/create",
+          path: 'products/create',
           element: <CreateProductPage />,
         },
         {
-          path: "orders",
+          path: 'orders',
           element: <ListOrdersPage />,
         },
       ],
     },
     {
-      path: "/cart",
+      path: '/cart',
       element: <CartPage />,
     },
   ]);

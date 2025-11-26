@@ -75,12 +75,12 @@ function ListProductsPage() {
 
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mt-4">
           <div className="flex items-center gap-2">
-            <input 
-              value={searchTerm} 
-              onChange={(evt) => setSearchTerm(evt.target.value)} 
-              type="text" 
-              placeholder="Buscar" 
-              className="flex-1 text-base px-3 py-2 border border-gray-300 rounded-md" 
+            <input
+              value={searchTerm}
+              onChange={(evt) => setSearchTerm(evt.target.value)}
+              type="text"
+              placeholder="Buscar"
+              className="flex-1 text-base px-3 py-2 border border-gray-300 rounded-md"
             />
             <Button className="px-3 py-2" onClick={handleSearch}>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
@@ -92,8 +92,8 @@ function ListProductsPage() {
               </svg>
             </Button>
           </div>
-          <select 
-            onChange={evt => setStatus(evt.target.value)} 
+          <select
+            onChange={evt => setStatus(evt.target.value)}
             className="text-base px-3 py-2 border border-gray-300 rounded-md"
           >
             <option value={productStatus.ALL}>Todos</option>
@@ -111,7 +111,7 @@ function ListProductsPage() {
               <Card key={product.sku}>
                 <h2 className="text-lg sm:text-xl font-semibold">{product.sku} - {product.name}</h2>
                 <p className="text-sm sm:text-base text-gray-600 mt-2">
-                  Stock: {product.stockQuantity} - ${product.currentUnitPrice} - 
+                  Stock: {product.stockQuantity} - ${product.currentUnitPrice} -
                   <span className={`ml-2 ${product.isActive ? 'text-green-600' : 'text-red-600'}`}>
                     {product.isActive ? 'Activado' : 'Desactivado'}
                   </span>

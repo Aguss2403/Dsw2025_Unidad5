@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import MainLayout from "../../core/components/MainLayout";
-import StoreProductCard from "../components/StoreProductCard";
-import Button from "../../shared/components/Button";
-import { getStoreProducts } from "../services/storeService";
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import MainLayout from '../../core/components/MainLayout';
+import StoreProductCard from '../components/StoreProductCard';
+import Button from '../../shared/components/Button';
+import { getStoreProducts } from '../services/storeService';
 
 function StorePage() {
   // Leemos la URL para saber si hay búsqueda activa (?search=zapatillas)
   const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get("search");
+  const searchQuery = searchParams.get('search');
 
   // Estado local para productos y paginación
   const [products, setProducts] = useState([]);
@@ -28,6 +28,7 @@ function StorePage() {
       setTotalItems(data.total || 0);
       setTotalPages(Math.ceil((data.total || 0) / 20));
     }
+
     setLoading(false);
   };
 
@@ -49,7 +50,7 @@ function StorePage() {
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
         {searchQuery
           ? `Resultados para "${searchQuery}"`
-          : "Catálogo de Productos"}
+          : 'Catálogo de Productos'}
       </h1>
 
       {loading ? (
