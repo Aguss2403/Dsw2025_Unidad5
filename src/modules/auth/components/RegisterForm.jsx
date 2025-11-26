@@ -49,7 +49,7 @@ function RegisterForm({ onSuccess, onSwitchToLogin }) {
 
   const formClasses = onSuccess 
     ? "flex flex-col gap-4 h-[80vh] overflow-y-auto px-1" // Scroll si es modal
-    : "flex flex-col gap-4 bg-white p-8 sm:w-md sm:rounded-lg sm:shadow-lg";
+    : "flex flex-col gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg";
 
   return (
     <form className={formClasses} onSubmit={handleSubmit(onValid)}>

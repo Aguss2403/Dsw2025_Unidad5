@@ -41,7 +41,7 @@ function Header() {
   const handleLogout = () => {
     singout();
     setIsMenuOpen(false);
-    navigate('/login'); 
+    navigate('/'); 
   };
 
   // Cierra menú hamburguesa al hacer click fuera
@@ -153,7 +153,7 @@ function Header() {
                         {/* --- LINK DASHBOARD PARA ADMIN (MÓVIL) --- */}
                         {isAdmin && (
                           <Link 
-                            to="/admin/home" 
+                            to="/admin/dashboard" 
                             className="block px-4 py-2 text-sm text-purple-700 font-semibold hover:bg-purple-50"
                             onClick={() => setIsMenuOpen(false)}
                           >

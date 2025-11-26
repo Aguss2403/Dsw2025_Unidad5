@@ -55,7 +55,7 @@ function LoginForm({ onSuccess, onSwitchToRegister }) {
   // Si no (Página), usamos estilos de tarjeta (shadow, bg-white, etc).
   const formClasses = onSuccess 
     ? "flex flex-col gap-4" // Estilo para Modal (Simple)
-    : "flex flex-col gap-10 bg-white p-8 sm:w-md sm:gap-4 sm:rounded-lg sm:shadow-lg"; // Estilo para Página (Tarjeta)
+    : "flex flex-col gap-6 sm:gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg"; // Estilo para Página (Tarjeta)
 
   return (
     <form
