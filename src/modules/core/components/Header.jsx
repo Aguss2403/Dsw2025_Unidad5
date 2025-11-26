@@ -8,13 +8,12 @@ import SearchBar from "./SearchBar";
 
 function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated, singout, roles } = useAuth();
-  const authData = useAuth();
+
+  // 1. CORRECCIÓN: Extraemos 'user' directamente del hook useAuth
+  const { isAuthenticated, singout, roles, user } = useAuth();
+
   const { cartItems } = useCart();
-  console.log("authData  ", authData);
-
   const { searchTerm, handleInputChange, handleSearch } = useGlobalSearch();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -38,8 +37,12 @@ function Header() {
     navigate("/admin/dashboard");
   };
 
+  // 2. CORRECCIÓN: Validación de rol insensible a mayúsculas/minúsculas
   const renderDashboardButton = () => {
-    if (roles.includes("admin")) {
+    // Verificamos si existe algún rol que sea "admin" (ignorando mayúsculas)
+    const isAdmin = roles && roles.some((r) => r.toLowerCase() === "admin");
+
+    if (isAdmin) {
       return (
         <Button className="hidden sm:block" onClick={navigateToDashboard}>
           Dashboard
@@ -68,6 +71,7 @@ function Header() {
 
   const CartIcon = () => (
     <div className="relative text-gray-600 hover:text-purple-600 transition">
+      {/* ... SVG del carrito ... */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -94,12 +98,13 @@ function Header() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between gap-4">
-          {/* 1. Logo (Izquierda) */}
+          {/* 1. Logo */}
           <div className="flex items-center shrink-0">
             <div
               className="font-bold text-2xl text-gray-900 cursor-pointer flex items-center gap-2"
               onClick={() => navigate("/")}
             >
+              {/* ... SVG Logo ... */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -118,42 +123,41 @@ function Header() {
             </div>
           </div>
 
-          {/* 2. Barra de Búsqueda (Centro - Expandible) */}
+          {/* 2. Barra de Búsqueda */}
           <div className="flex-1 max-w-2xl px-2 lg:px-8">
             <SearchBar
               value={searchTerm}
               onChange={handleInputChange}
-              onSearch={() => handleSearch()} // Se activa al dar Enter en el SearchBar
+              onSearch={() => handleSearch()}
               className="w-full"
             />
           </div>
 
-          {/* 3. Acciones (Derecha) */}
+          {/* 3. Acciones */}
           <div className="flex items-center shrink-0 relative" ref={menuRef}>
-            {/* {isAuthenticated ? ( */}
             <>
-              {/* Desktop: Todo visible */}
+              {/* Desktop */}
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/cart" title="Ver Carrito">
                   <CartIcon />
                 </Link>
 
-                {/* {console.log("username  " + username)} */}
+                {/* 3. CORRECCIÓN: Usar objeto user para mostrar el nombre */}
                 <span className="text-sm font-medium text-gray-700">
-                  Hola, {localStorage.getItem("user") || "Invitado"}
+                  Hola, {localStorage.getItem("name") || "Invitado"}
                 </span>
 
                 {renderDashboardButton()}
-
                 {renderLogoutButton()}
               </div>
 
-              {/* Mobile: Hamburguesa */}
+              {/* Mobile */}
               <div className="md:hidden">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className="p-2 rounded-md hover:bg-gray-100 text-gray-600 focus:outline-none"
                 >
+                  {/* SVG Hamburguesa */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -173,10 +177,10 @@ function Header() {
                 {isMenuOpen && (
                   <div className="absolute right-0 top-12 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5 z-50">
                     <div className="px-4 py-2 border-b border-gray-100 text-xs text-gray-500">
-                      Hola, {localStorage.getItem("user") || "Invitado"}
+                      {/* CORRECCIÓN: Usar objeto user aquí también */}
+                      Hola, {user?.firstName || "Invitado"}
                     </div>
 
-                    {/* Enlaces Mobile */}
                     <Link
                       to="/"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -198,35 +202,19 @@ function Header() {
                       )}
                     </Link>
 
-                    {/* <button
+                    {/* Botón Logout Mobile opcional */}
+                    {isAuthenticated && (
+                      <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100"
                       >
                         Cerrar Sesión
-                      </button> */}
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
             </>
-            {/* ) : (
-              // No autenticado
-              <div className="flex gap-2">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => navigate("/login")}
-                >
-                  Ingresar
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => navigate("/register")}
-                  className="hidden sm:block"
-                >
-                  Registro
-                </Button>
-              </div>
-            )} */}
           </div>
         </div>
       </div>

@@ -20,18 +20,14 @@ function LoginForm() {
 
   const onValid = async (formData) => {
     try {
-      const { error, roles } = await singin(
-        formData.username,
-        formData.password
-      );
+      const { error } = await singin(formData.username, formData.password);
 
       if (error) {
         setErrorMessage(error.frontendErrorMessage);
         return;
       }
-      console.log("Roles del usuario:", roles);
 
-      if (roles.includes("admin")) {
+      if (localStorage.getItem("role") == "admin") {
         navigate("/admin/dashboard");
       } else {
         navigate("/");
