@@ -1,14 +1,11 @@
 import Modal from '../../shared/components/Modal'; // Asegúrate de haber creado este archivo en el Paso 1
 import LoginForm from './LoginForm';
 
-function LoginModal({ isOpen, onClose }) {
+// src/modules/auth/components/LoginModal.jsx
+function LoginModal({ isOpen, onClose, onSwitchToRegister }) { // <--- Recibe la prop
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Iniciar Sesión">
-      {/* Pasamos onClose a la prop onSuccess.
-        Así, cuando el login sea correcto, el formulario ejecutará onClose() 
-        y el modal se cerrará automáticamente.
-      */}
-      <LoginForm onSuccess={onClose} />
+      <LoginForm onSuccess={onClose} onSwitchToRegister={onSwitchToRegister} /> {/* <--- Pasa la prop */}
     </Modal>
   );
 }

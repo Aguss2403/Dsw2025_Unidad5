@@ -6,7 +6,7 @@ import Button from "../../shared/components/Button";
 import useAuth from "../hook/useAuth";
 import { frontendErrorMessage } from "../helpers/backendError";
 
-function LoginForm({ onSuccess }) {
+function LoginForm({ onSuccess, onSwitchToRegister }) {
   const [errorMessage, setErrorMessage] = useState("");
   const {
     register,

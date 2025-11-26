@@ -6,7 +6,7 @@ function RegisterPage() {
       flex
       flex-col
       justify-center
-      h-dvh
+      min-h-screen
       bg-neutral-100
       sm:items-center
     '>
