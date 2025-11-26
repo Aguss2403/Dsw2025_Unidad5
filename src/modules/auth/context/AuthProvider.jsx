@@ -1,12 +1,12 @@
-import { createContext, useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { login } from "../services/login";
+import { createContext, useState } from 'react';
+import { login } from '../services/login';
 
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
+
     return Boolean(token);
   });
 
@@ -35,17 +35,18 @@ function AuthProvider({ children }) {
       id,
     } = data;
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("name", firstName || returnedUsername);
-    localStorage.setItem("lastName", lastName);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phoneNumber", phoneNumber);
-    localStorage.setItem("address", address);
-    localStorage.setItem("customerId", customerId);
-    localStorage.setItem("userId", id);
-    localStorage.setItem("role", role);
+    localStorage.setItem('token', token);
+    localStorage.setItem('name', firstName || returnedUsername);
+    localStorage.setItem('lastName', lastName);
+    localStorage.setItem('email', email);
+    localStorage.setItem('phoneNumber', phoneNumber);
+    localStorage.setItem('address', address);
+    localStorage.setItem('customerId', customerId);
+    localStorage.setItem('userId', id);
+    localStorage.setItem('role', role);
 
     setIsAuthenticated(true);
+
     return { error: null };
   };
 

@@ -11,16 +11,16 @@ function RegisterForm({ onSuccess, onSwitchToLogin }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ 
-    defaultValues: { 
-      username: '', 
-      password: '', 
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
       email: '',
       firstName: '',
       lastName: '',
       phoneNumber: '',
-      address: ''
-    } 
+      address: '',
+    },
   });
 
   const navigate = useNavigate();
@@ -31,30 +31,31 @@ function RegisterForm({ onSuccess, onSwitchToLogin }) {
 
       if (error) {
         setErrorMessage('Error al registrar usuario');
+
         return;
       }
 
       alert('Usuario registrado con éxito');
-      
+
       if (onSuccess) {
         onSuccess(); // Cierra el modal
       } else {
         navigate('/login'); // Comportamiento clásico
       }
-      
+
     } catch (error) {
       setErrorMessage('Error al registrar usuario: ' + (error.response?.data?.message || 'Intente nuevamente'));
     }
   };
 
-  const formClasses = onSuccess 
-    ? "flex flex-col gap-4 h-[80vh] overflow-y-auto px-1" // Scroll si es modal
-    : "flex flex-col gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg";
+  const formClasses = onSuccess
+    ? 'flex flex-col gap-4 h-[80vh] overflow-y-auto px-1' // Scroll si es modal
+    : 'flex flex-col gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg';
 
   return (
     <form className={formClasses} onSubmit={handleSubmit(onValid)}>
       {!onSuccess && <h2 className="text-2xl text-center mb-4">Registro</h2>}
-      
+
       <Input
         label='Nombre'
         {...register('firstName', { required: 'Nombre es requerido' })}
@@ -76,8 +77,8 @@ function RegisterForm({ onSuccess, onSwitchToLogin }) {
           required: 'Email es requerido',
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: "Email inválido"
-          }
+            message: 'Email inválido',
+          },
         })}
         error={errors.email?.message}
       />
@@ -96,16 +97,16 @@ function RegisterForm({ onSuccess, onSwitchToLogin }) {
         type='password'
         {...register('password', {
           required: 'Contraseña es requerida',
-          minLength: { value: 6, message: "Mínimo 6 caracteres" }
+          minLength: { value: 6, message: 'Mínimo 6 caracteres' },
         })}
         error={errors.password?.message}
       />
 
       <div className="flex flex-col gap-3 mt-4">
         <Button type='submit'>Registrarse</Button>
-        
-        <Button 
-          variant='secondary' 
+
+        <Button
+          variant='secondary'
           onClick={() => {
             if (onSwitchToLogin) onSwitchToLogin();
             else navigate('/login');

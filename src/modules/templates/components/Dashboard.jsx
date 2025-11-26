@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import useAuth from "../../auth/hook/useAuth";
-import Button from "../../shared/components/Button";
+import { useState } from 'react';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import useAuth from '../../auth/hook/useAuth';
+import Button from '../../shared/components/Button';
 
 function Dashboard() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -12,22 +12,22 @@ function Dashboard() {
 
   const logout = () => {
     singout();
-    navigate("/login");
+    navigate('/login');
   };
 
   const navigateToStore = () => {
-    navigate("../");
+    navigate('../');
   };
 
   const getLinkStyles = ({ isActive }) =>
     `
       pl-4 w-full block  pt-4 pb-4 rounded-4xl transition hover:bg-gray-100
-      ${isActive ? "bg-purple-200 hover:bg-purple-100 " : ""}
+      ${isActive ? 'bg-purple-200 hover:bg-purple-100 ' : ''}
     `;
 
   const renderLogoutButton = (mobile = false) => (
     <Button
-      className={`${mobile ? "block w-full sm:hidden" : "hidden sm:block"}`}
+      className={`${mobile ? 'block w-full sm:hidden' : 'hidden sm:block'}`}
       onClick={logout}
     >
       Cerrar sesión
@@ -36,7 +36,7 @@ function Dashboard() {
 
   const renderStoreButton = (mobile = false) => (
     <Button
-      className={`${mobile ? "block w-full sm:hidden" : "hidden sm:block"}`}
+      className={`${mobile ? 'block w-full sm:hidden' : 'hidden sm:block'}`}
       onClick={navigateToStore}
     >
       Tienda
@@ -71,7 +71,7 @@ function Dashboard() {
 
         {/* 2. Elemento Derecha: Contenedor para los botones juntos */}
         <div className="flex items-center gap-2">
-          {" "}
+          {' '}
           {/* gap-2 separa los botones entre sí */}
           {renderStoreButton()}
           {renderLogoutButton()}
@@ -101,7 +101,7 @@ function Dashboard() {
             bg-white
             w-64
             p-6
-            ${openMenu ? "left-0" : "left-[-256px]"}
+            ${openMenu ? 'left-0' : 'left-[-256px]'}
             rounded
             shadow
             flex

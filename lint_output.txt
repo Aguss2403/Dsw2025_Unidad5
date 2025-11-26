@@ -1,0 +1,68 @@
+
+> unidad-5@0.0.0 lint
+> eslint .
+
+
+C:\Users\agust\OneDrive\Documentos\DSW\DSW2025_Front\src\modules\cart\context\CartContext.jsx
+   1:37  error  Strings must use singlequote               quotes
+   2:29  error  Strings must use singlequote               quotes
+   3:29  error  Strings must use singlequote               quotes
+   8:43  error  Strings must use singlequote               quotes
+   9:7   error  Expected blank line before this statement  padding-line-between-statements
+  20:8   error  Missing trailing comma                     comma-dangle
+  24:26  error  Strings must use singlequote               quotes
+  30:41  error  Missing trailing comma                     comma-dangle
+  59:67  error  Missing trailing comma                     comma-dangle
+  60:8   error  Missing trailing comma                     comma-dangle
+  68:47  error  Strings must use singlequote               quotes
+  70:34  error  Strings must use singlequote               quotes
+  72:56  error  Strings must use singlequote               quotes
+  77:20  error  Strings must use singlequote               quotes
+
+C:\Users\agust\OneDrive\Documentos\DSW\DSW2025_Front\src\modules\core\components\header\UserMenuDesktop.jsx
+   1:35  error  Strings must use singlequote  quotes
+   2:20  error  Strings must use singlequote  quotes
+   3:22  error  Strings must use singlequote  quotes
+  37:37  error  Strings must use singlequote  quotes
+  43:35  error  Strings must use singlequote  quotes
+
+C:\Users\agust\OneDrive\Documentos\DSW\DSW2025_Front\src\modules\core\components\header\UserMenuMobile.jsx
+    1:45  error  Strings must use singlequote  quotes
+    2:22  error  Strings must use singlequote  quotes
+    3:21  error  Strings must use singlequote  quotes
+    4:20  error  Strings must use singlequote  quotes
+   25:31  error  Strings must use singlequote  quotes
+   27:47  error  Strings must use singlequote  quotes
+  115:41  error  Strings must use singlequote  quotes
+
+C:\Users\agust\OneDrive\Documentos\DSW\DSW2025_Front\src\modules\products\pages\ListProductsPage.jsx
+    1:50  error  Strings must use singlequote  quotes
+    2:29  error  Strings must use singlequote  quotes
+    3:20  error  Strings must use singlequote  quotes
+    4:18  error  Strings must use singlequote  quotes
+    5:29  error  Strings must use singlequote  quotes
+    8:8   error  Strings must use singlequote  quotes
+    9:12  error  Strings must use singlequote  quotes
+   10:13  error  Strings must use singlequote  quotes
+   16:48  error  Strings must use singlequote  quotes
+   33:17  error  Missing trailing comma        comma-dangle
+   64:37  error  Strings must use singlequote  quotes
+  156:40  error  Strings must use singlequote  quotes
+  156:59  error  Strings must use singlequote  quotes
+  159:39  error  Strings must use singlequote  quotes
+  159:52  error  Strings must use singlequote  quotes
+
+C:\Users\agust\OneDrive\Documentos\DSW\DSW2025_Front\src\modules\store\pages\StorePage.jsx
+   1:50  error  Strings must use singlequote  quotes
+   2:33  error  Strings must use singlequote  quotes
+   3:24  error  Strings must use singlequote  quotes
+   4:30  error  Strings must use singlequote  quotes
+   5:20  error  Strings must use singlequote  quotes
+   6:34  error  Strings must use singlequote  quotes
+  11:40  error  Strings must use singlequote  quotes
+  35:18  error  Missing trailing comma        comma-dangle
+  56:13  error  Strings must use singlequote  quotes
+
+Ô£û 50 problems (50 errors, 0 warnings)
+  50 errors and 0 warnings potentially fixable with the `--fix` option.
+

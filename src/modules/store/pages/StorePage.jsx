@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import MainLayout from "../../core/components/MainLayout";
-import StoreProductCard from "../components/StoreProductCard";
-import Button from "../../shared/components/Button";
-import { getStoreProducts } from "../services/storeService";
+import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import MainLayout from '../../core/components/MainLayout';
+import StoreProductCard from '../components/StoreProductCard';
+import Button from '../../shared/components/Button';
+import { getStoreProducts } from '../services/storeService';
 
 function StorePage() {
   // Leemos la URL para saber si hay búsqueda activa (?search=zapatillas)
   const [searchParams] = useSearchParams();
-  const searchQuery = searchParams.get("search");
+  const searchQuery = searchParams.get('search');
 
   // Estado local para productos y paginación
   const [products, setProducts] = useState([]);
@@ -18,25 +18,29 @@ function StorePage() {
   const [totalItems, setTotalItems] = useState(0);
 
   // Función de carga de datos
-  const fetchProducts = async (page = 1) => {
-    setLoading(true);
-    // Pasamos el término de búsqueda (searchQuery) al servicio
-    const { data } = await getStoreProducts(searchQuery, page, 20);
+  const fetchProducts = useCallback(
+    async (page = 1) => {
+      setLoading(true);
+      // Pasamos el término de búsqueda (searchQuery) al servicio
+      const { data } = await getStoreProducts(searchQuery, page, 20);
 
-    if (data) {
-      setProducts(data.items || []);
-      setTotalItems(data.total || 0);
-      setTotalPages(Math.ceil((data.total || 0) / 20));
-    }
-    setLoading(false);
-  };
+      if (data) {
+        setProducts(data.items || []);
+        setTotalItems(data.total || 0);
+        setTotalPages(Math.ceil((data.total || 0) / 20));
+      }
+
+      setLoading(false);
+    },
+    [searchQuery],
+  );
 
   // Efecto: Cuando cambia la página o la búsqueda, recargamos
   useEffect(() => {
     // Si cambia la búsqueda, reseteamos a la página 1 primero
     // (Nota: Esto ya lo maneja el hook useGlobalSearch al navegar, pero por seguridad podemos resetear page aquí si fuese necesario)
     fetchProducts(currentPage);
-  }, [currentPage, searchQuery]); // <-- Escuchamos cambios en la búsqueda
+  }, [currentPage, fetchProducts]); // <-- Escuchamos cambios en la búsqueda
 
   // Efecto adicional para resetear a página 1 si la búsqueda cambia drásticamente
   useEffect(() => {
@@ -49,7 +53,7 @@ function StorePage() {
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
         {searchQuery
           ? `Resultados para "${searchQuery}"`
-          : "Catálogo de Productos"}
+          : 'Catálogo de Productos'}
       </h1>
 
       {loading ? (

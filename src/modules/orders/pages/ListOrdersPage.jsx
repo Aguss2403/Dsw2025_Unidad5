@@ -1,33 +1,29 @@
-import { useEffect, useState } from "react";
-import Button from "../../shared/components/Button";
-import { listOrders } from "../services/listOrders";
-import OrderDetailModal from "../components/OrderDetailModal";
+import { useEffect, useState } from 'react';
+import Button from '../../shared/components/Button';
+import { listOrders } from '../services/listOrders';
+import OrderDetailModal from '../components/OrderDetailModal';
 
 function ListOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 10;
 
-  const getLinkStyles = ({ isActive }) =>
-    `
-        pl-4 w-full block  pt-4 pb-4 rounded-4xl transition hover:bg-gray-100
-        ${isActive ? "bg-purple-200 hover:bg-purple-100 " : ""}
-      `;
-
   useEffect(() => {
     const fetchOrders = async () => {
       const { data, error } = await listOrders();
+
       if (error) {
         setError(error);
       } else {
         setOrders(data);
       }
+
       setLoading(false);
     };
 
@@ -50,6 +46,7 @@ function ListOrdersPage() {
       order.id.toString().includes(searchTerm) ||
       order.shippingAddress?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = !statusFilter || order.orderStatus === statusFilter;
+
     return matchesSearch && matchesStatus;
   });
 
@@ -58,7 +55,7 @@ function ListOrdersPage() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedOrders = filteredOrders.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
 
   // Generar números de página
@@ -72,11 +69,11 @@ function ListOrdersPage() {
       }
     } else {
       if (currentPage <= 3) {
-        pages.push(1, 2, 3, "...", totalPages);
+        pages.push(1, 2, 3, '...', totalPages);
       } else if (currentPage >= totalPages - 2) {
-        pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+        pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
       } else {
-        pages.push(1, "...", currentPage, "...", totalPages);
+        pages.push(1, '...', currentPage, '...', totalPages);
       }
     }
 
@@ -84,6 +81,7 @@ function ListOrdersPage() {
   };
 
   if (loading) return <p className="text-gray-600">Cargando ordenes...</p>;
+
   if (error)
     return (
       <p className="text-red-600">Error al cargar ordenes: {error.message}</p>
@@ -155,17 +153,17 @@ function ListOrdersPage() {
               <div className="min-w-0 flex-1">
                 <h3 className="text-2xl">
                   <span className="font-bold text-gray-900">
-                    Número de Orden:{" "}
+                    Número de Orden:{' '}
                   </span>
                   <span className="font-normal text-gray-600">{order.id}</span>
                 </h3>
 
                 <h3 className="text-2xl">
                   <span className="font-bold text-gray-900">
-                    Nombre y Apellido:{" "}
+                    Nombre y Apellido:{' '}
                   </span>
                   <span className="font-normal text-gray-600">
-                    {order.customerFirstName + " " + order.customerLastName}
+                    {order.customerFirstName + ' ' + order.customerLastName}
                   </span>
                 </h3>
                 <h3 className="text-2xl">
@@ -175,7 +173,7 @@ function ListOrdersPage() {
                   </span>
                 </h3>
                 <p className="text-sm sm:text-base text-gray-500 mt-1">
-                  Estado:{" "}
+                  Estado:{' '}
                   <span className="font-medium text-purple-600">
                     {order.orderStatus}
                   </span>
@@ -194,7 +192,7 @@ function ListOrdersPage() {
         )}
       </div>
 
-      {/* Paginación - Responsiva */}
+      {/* Paginación*/}
       {totalPages > 1 && (
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center mt-6">
           <button
@@ -205,17 +203,17 @@ function ListOrdersPage() {
             ← Anterior
           </button>
 
-          {/* Números de página - Compactos en mobile */}
+          {/* Números de página*/}
           <div className="flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
             {getPageNumbers().map((page, index) =>
-              typeof page === "number" ? (
+              typeof page === 'number' ? (
                 <button
                   key={index}
                   onClick={() => setCurrentPage(page)}
                   className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-sm font-medium transition ${
                     currentPage === page
-                      ? "bg-gray-900 text-white"
-                      : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                   }`}
                 >
                   {page}
@@ -224,7 +222,7 @@ function ListOrdersPage() {
                 <span key={index} className="px-1 text-gray-400 text-sm">
                   ...
                 </span>
-              )
+              ),
             )}
           </div>
 

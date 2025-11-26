@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
-import useAuth from "../hook/useAuth";
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hook/useAuth';
 
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated } = useAuth();
@@ -9,7 +9,8 @@ function ProtectedRoute({ children, roles }) {
   }
 
   if (roles && roles.length > 0) {
-    const hasRole = roles.some((role) => localStorage.getItem("role") == role);
+    const hasRole = roles.some((role) => localStorage.getItem('role') == role);
+
     if (!hasRole) {
       return <Navigate to="/login" />;
     }

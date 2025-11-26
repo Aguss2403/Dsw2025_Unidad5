@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import MainLayout from "../../core/components/MainLayout";
-import CartItem from "../components/CartItem";
-import useCart from "../hooks/useCart";
-import useAuth from "../../auth/hook/useAuth";
-import Button from "../../shared/components/Button";
-import LoginModal from "../../auth/components/LoginModal";
-import RegisterModal from "../../auth/components/RegisterModal";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import MainLayout from '../../core/components/MainLayout';
+import CartItem from '../components/CartItem';
+import useCart from '../hooks/useCart';
+import useAuth from '../../auth/hook/useAuth';
+import Button from '../../shared/components/Button';
+import LoginModal from '../../auth/components/LoginModal';
+import RegisterModal from '../../auth/components/RegisterModal';
 
 function CartPage() {
   const { cartItems, total, removeItem, updateQuantity, checkout } = useCart();
@@ -19,21 +19,23 @@ function CartPage() {
   const handleCheckout = async () => {
     if (!isAuthenticated) {
       setIsLoginModalOpen(true);
+
       return;
     }
 
     setCheckoutLoading(true);
     const { error } = await checkout(); // customerId is handled in context
+
     setCheckoutLoading(false);
 
     if (error) {
       alert(
-        "Error al finalizar la compra: " +
-          (error.message || "Error desconocido")
+        'Error al finalizar la compra: ' +
+          (error.message || 'Error desconocido'),
       );
     } else {
-      alert("¡Compra realizada con éxito!");
-      navigate("/"); // Or wherever you want to redirect
+      alert('¡Compra realizada con éxito!');
+      navigate('/'); // Or wherever you want to redirect
     }
   };
 
@@ -65,7 +67,7 @@ function CartPage() {
           <h2 className="text-xl font-semibold text-gray-700">
             Tu carrito está vacío
           </h2>
-          <Button onClick={() => navigate("/")}>Ir a la tienda</Button>
+          <Button onClick={() => navigate('/')}>Ir a la tienda</Button>
         </div>
       </MainLayout>
     );
@@ -108,11 +110,11 @@ function CartPage() {
             onClick={handleCheckout}
             disabled={checkoutLoading}
           >
-            {checkoutLoading ? "Procesando..." : "Finalizar Compra"}
+            {checkoutLoading ? 'Procesando...' : 'Finalizar Compra'}
           </Button>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="w-full mt-3 text-sm text-purple-600 hover:text-purple-800 font-medium"
           >
             Continuar comprando

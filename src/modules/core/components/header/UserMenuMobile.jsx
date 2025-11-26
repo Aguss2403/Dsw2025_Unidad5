@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import useCart from "../../../cart/hooks/useCart";
-import Button from "../../../shared/components/Button";
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import useCart from '../../../cart/hooks/useCart';
+import Button from '../../../shared/components/Button';
 
 function UserMenuMobile({
   isAuthenticated,
-  username,
   isAdmin,
   onLogin,
   onRegister,
@@ -22,8 +21,10 @@ function UserMenuMobile({
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   if (!isAuthenticated) {
@@ -111,7 +112,7 @@ function UserMenuMobile({
       {isOpen && (
         <div className="absolute right-0 top-12 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 ring-1 ring-black ring-opacity-5 z-50">
           <div className="px-4 py-2 border-b border-gray-100 text-xs text-gray-500">
-            Hola, {localStorage.getItem("name")}
+            Hola, {localStorage.getItem('name')}
           </div>
 
           <Link

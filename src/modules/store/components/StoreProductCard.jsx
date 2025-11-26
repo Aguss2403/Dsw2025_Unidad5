@@ -21,7 +21,8 @@ function StoreProductCard({ product }) {
   const handleAddToCart = () => {
     if (quantity < 1) {
       // Aquí está bien usar alert o mejor un mensaje de error en UI
-      alert('Debes seleccionar al menos 1 producto'); 
+      alert('Debes seleccionar al menos 1 producto');
+
       return;
     }
 
@@ -29,7 +30,7 @@ function StoreProductCard({ product }) {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.currentUnitPrice
+      price: product.currentUnitPrice,
     };
 
     // 1. Agregar el item
@@ -40,16 +41,16 @@ function StoreProductCard({ product }) {
 
     // 3. Opcional: Notificar SIN bloquear (ej: console.log o un toast personalizado)
     console.log(`${quantity} ${product.name} agregado(s) al carrito`);
-   
+
   };
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="bg-gray-200 aspect-square rounded-md flex items-center justify-center text-gray-400 overflow-hidden">
-        <img 
-          src={isDiego ? diegoImage : productImage} 
-          alt={product.name} 
-          className="w-full h-full object-cover" 
+        <img
+          src={isDiego ? diegoImage : productImage}
+          alt={product.name}
+          className="w-full h-full object-cover"
         />
       </div>
       <div>
@@ -60,14 +61,14 @@ function StoreProductCard({ product }) {
         <span className="font-bold text-lg">${product.currentUnitPrice}</span>
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={handleDecrement}
               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold"
             >
               -
             </button>
             <span className="text-sm font-medium w-8 text-center">{quantity}</span>
-            <button 
+            <button
               onClick={handleIncrement}
               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold"
             >

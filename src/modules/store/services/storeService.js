@@ -7,6 +7,7 @@ export const getStoreProducts = async (search = null, pageNumber = 1, pageSize =
   };
 
   if (search) params.search = search;
+
   params.status = 'enabled';
 
   const queryString = new URLSearchParams(params);
