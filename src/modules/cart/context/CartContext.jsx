@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { createOrder } from '../services/createOrder';
-import { CartContext } from './CartContextDefinition';
+import { useState, useEffect } from "react";
+import { createOrder } from "../services/createOrder";
+import { CartContext } from "../services/CartContextDefinition";
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const stored = localStorage.getItem('cart');
+      const stored = localStorage.getItem("cart");
 
       return stored ? JSON.parse(stored) : [];
     } catch {
@@ -18,17 +18,17 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const calcTotal = cartItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
-      0,
+      0
     );
 
     setTotal(calcTotal);
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addItem = (product, quantity) => {
     setCartItems((currentItems) => {
       const existingItemIndex = currentItems.findIndex(
-        (item) => item.id === product.id,
+        (item) => item.id === product.id
       );
 
       if (existingItemIndex >= 0) {
@@ -57,8 +57,8 @@ export const CartProvider = ({ children }) => {
 
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item,
-      ),
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      )
     );
   };
 
@@ -66,16 +66,16 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
-  const checkout = async (customerId, notes = '') => {
+  const checkout = async (customerId, notes = "") => {
     if (cartItems.length === 0)
-      return { error: { message: 'El carrito está vacío' } };
+      return { error: { message: "El carrito está vacío" } };
 
-    const idToUse = customerId || localStorage.getItem('customerId');
+    const idToUse = customerId || localStorage.getItem("customerId");
 
     if (!idToUse) {
       return {
         error: {
-          message: 'Usuario no autenticado o ID de cliente no encontrado',
+          message: "Usuario no autenticado o ID de cliente no encontrado",
         },
       };
     }
