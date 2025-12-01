@@ -118,7 +118,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-md:hidden">
+      <div className="md:hidden">
         {renderBurgerButton()}
         {/* Overlay */}
         {isOpen && (
@@ -172,7 +172,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
     );
   } else {
     return (
-      <div className="min-md:hidden">
+      <div className="md:hidden">
         {renderBurgerButton()}
 
         {/* Overlay */}

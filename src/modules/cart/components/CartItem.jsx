@@ -46,7 +46,7 @@ function CartItem({ item, onRemove, onUpdateQuantity }) {
         </button>
       </div>
 
-      <div className="flex flex-col gap-1 items-center min-md:flex-row min-md:items-center">
+      <div className="flex flex-col gap-1 items-center md:flex-row md:items-center">
         <span className="font-bold text-gray-900">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
