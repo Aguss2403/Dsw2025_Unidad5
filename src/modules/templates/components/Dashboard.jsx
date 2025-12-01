@@ -1,10 +1,44 @@
-import { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import useAuth from '../../auth/hook/useAuth';
-import Button from '../../shared/components/Button';
+import { useState, useEffect, useRef } from "react";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../auth/hook/useAuth";
+import Button from "../../shared/components/Button";
 
 function Dashboard() {
   const [openMenu, setOpenMenu] = useState(false);
+  const menuRef = useRef(null);
+  const location = useLocation();
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenu(false);
+      }
+    };
+
+    if (openMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openMenu]);
+
+  // Block scrolling when menu is open
+  useEffect(() => {
+    if (openMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [openMenu]);
+
+  // Close menu when location changes (navigation)
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [location]);
 
   const navigate = useNavigate();
 
@@ -12,22 +46,25 @@ function Dashboard() {
 
   const logout = () => {
     singout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const navigateToStore = () => {
-    navigate('../');
+    navigate("../");
   };
 
   const getLinkStyles = ({ isActive }) =>
     `
       pl-4 w-full block  pt-4 pb-4 rounded-4xl transition hover:bg-gray-100
-      ${isActive ? 'bg-purple-200 hover:bg-purple-100 ' : ''}
+      ${isActive ? "bg-purple-200 hover:bg-purple-100 " : ""}
     `;
 
   const renderLogoutButton = (mobile = false) => (
     <Button
-      className={`${mobile ? 'block w-full sm:hidden' : 'hidden sm:block'}`}
+      variant="secondary"
+      className={`text-red-600 ${
+        mobile ? "block w-full sm:hidden" : "hidden sm:block"
+      }`}
       onClick={logout}
     >
       Cerrar sesión
@@ -36,7 +73,7 @@ function Dashboard() {
 
   const renderStoreButton = (mobile = false) => (
     <Button
-      className={`${mobile ? 'block w-full sm:hidden' : 'hidden sm:block'}`}
+      className={`${mobile ? "block w-full sm:hidden" : "hidden sm:block"}`}
       onClick={navigateToStore}
     >
       Tienda
@@ -67,11 +104,11 @@ function Dashboard() {
         sm:col-span-2"
       >
         {/* 1. Elemento Izquierda: El Título */}
-        <span className="font-semibold text-lg">Mi Dashboard</span>
+        <span className="font-bold text-3xl">Dashboard</span>
 
         {/* 2. Elemento Derecha: Contenedor para los botones juntos */}
         <div className="flex items-center gap-2">
-          {' '}
+          {" "}
           {/* gap-2 separa los botones entre sí */}
           {renderStoreButton()}
           {renderLogoutButton()}
@@ -83,7 +120,10 @@ function Dashboard() {
           shadow-none
           sm:hidden
           ml-2"
-            onClick={() => setOpenMenu(!openMenu)}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent click from immediately closing menu via outside click handler
+              setOpenMenu(!openMenu);
+            }}
           >
             {openMenu ? (
               <span className="text-xl">&#215;</span>
@@ -93,23 +133,43 @@ function Dashboard() {
           </button>
         </div>
       </header>
+
+      {/* Overlay for mobile menu background dimming (optional but good for UX) */}
+      {openMenu && (
+        <div
+          className="
+            fixed 
+            inset-0 
+            z-10 
+            sm:hidden
+            backdrop-blur-sm   
+            bg-black/5        
+          "
+          onClick={() => setOpenMenu(false)}
+        />
+      )}
+
       <aside
+        ref={menuRef}
         className={`
-            absolute
+            fixed
             top-0
             bottom-0
             bg-white
             w-64
             p-6
-            ${openMenu ? 'left-0' : 'left-[-256px]'}
-            rounded
-            shadow
+            transition-transform duration-300 ease-in-out
+            ${openMenu ? "translate-x-0" : "-translate-x-full"}
+            z-20
+            shadow-lg
             flex
             flex-col
             justify-between
 
+            sm:translate-x-0
             sm:relative
-            sm:left-0
+            sm:shadow
+            sm:z-auto
           `}
       >
         <nav>
@@ -132,8 +192,12 @@ function Dashboard() {
           </ul>
           <hr className="opacity-15 mt-4" />
         </nav>
-        {renderLogoutButton(true)}
+        <div className="flex flex-col gap-2">
+          {renderStoreButton(true)}
+          {renderLogoutButton(true)}
+        </div>
       </aside>
+
       <main
         className="
             p-5

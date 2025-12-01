@@ -1,4 +1,4 @@
-import Button from '../../shared/components/Button';
+import Button from "../../shared/components/Button";
 
 function CartItem({ item, onRemove, onUpdateQuantity }) {
   return (
@@ -46,24 +46,18 @@ function CartItem({ item, onRemove, onUpdateQuantity }) {
         </button>
       </div>
 
-      <div className="hidden sm:flex flex-col items-end gap-1 min-w-[100px]">
+      <div className="flex flex-col gap-1 items-center min-md:flex-row min-md:items-center">
         <span className="font-bold text-gray-900">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
-        <button
+        <Button
           onClick={() => onRemove(item.id)}
-          className="text-xs text-red-500 hover:text-red-700 hover:underline"
+          variant="secondary"
+          className="text-red-500 min-md"
         >
-          Eliminar
-        </button>
+          Quitar del carrito
+        </Button>
       </div>
-
-      <button
-        onClick={() => onRemove(item.id)}
-        className="text-sm text-red-500 sm:hidden w-full py-2 border border-red-100 rounded bg-red-50"
-      >
-        Quitar del carrito
-      </button>
     </div>
   );
 }

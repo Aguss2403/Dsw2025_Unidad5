@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import Header from './Header';
+import { useState } from "react";
+import Header from "./Header";
 
 function MainLayout({ children }) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = () => {
-    console.log('Buscando:', searchTerm);
+    console.log("Buscando:", searchTerm);
   };
 
   return (
@@ -24,7 +24,7 @@ function MainLayout({ children }) {
 
       {/* Footer (Opcional) */}
       <footer className="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} Unidad 5 - Store
+        Unidad 5 - TPI
       </footer>
     </div>
   );
