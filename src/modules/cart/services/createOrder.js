@@ -1,8 +1,8 @@
 import { instance } from '../../shared/api/axiosInstance';
 
-export const login = async (username, password) => {
+export const createOrder = async (orderData) => {
   try {
-    const response = await instance.post('api/auth/login', { username, password });
+    const response = await instance.post('api/orders', orderData);
 
     return { data: response.data, error: null };
   } catch (error) {

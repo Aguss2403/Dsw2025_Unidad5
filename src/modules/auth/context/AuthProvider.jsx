@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import { login } from '../services/login';
 
 const AuthContext = createContext();
@@ -7,28 +6,13 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const token = localStorage.getItem('token');
-    return Boolean(token);
-  });
 
-  const [roles, setRoles] = useState(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
-        return Array.isArray(roleClaim) ? roleClaim : [roleClaim];
-      } catch (error) {
-        console.error('Invalid token:', error);
-        return [];
-      }
-    }
-    return [];
+    return Boolean(token);
   });
 
   const singout = () => {
     localStorage.clear();
     setIsAuthenticated(false);
-    setRoles([]);
   };
 
   const singin = async (username, password) => {
@@ -38,16 +22,30 @@ function AuthProvider({ children }) {
       return { error };
     }
 
-    localStorage.setItem('token', data);
-    setIsAuthenticated(true);
+    const {
+      token,
+      firstName,
+      username: returnedUsername,
+      role,
+      lastName,
+      email,
+      phoneNumber,
+      address,
+      customerId,
+      id,
+    } = data;
 
-    try {
-      const decoded = jwtDecode(data);
-      const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
-      setRoles(Array.isArray(roleClaim) ? roleClaim : [roleClaim]);
-    } catch (e) {
-      setRoles([]);
-    }
+    localStorage.setItem('token', token);
+    localStorage.setItem('name', firstName || returnedUsername);
+    localStorage.setItem('lastName', lastName);
+    localStorage.setItem('email', email);
+    localStorage.setItem('phoneNumber', phoneNumber);
+    localStorage.setItem('address', address);
+    localStorage.setItem('customerId', customerId);
+    localStorage.setItem('userId', id);
+    localStorage.setItem('role', role);
+
+    setIsAuthenticated(true);
 
     return { error: null };
   };
@@ -56,7 +54,6 @@ function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        roles,
         singin,
         singout,
       }}
@@ -64,9 +61,6 @@ function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export {
-  AuthProvider,
-  AuthContext,
-};
+export { AuthProvider, AuthContext };

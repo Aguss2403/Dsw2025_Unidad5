@@ -6,7 +6,7 @@ import Button from '../../shared/components/Button';
 import useAuth from '../hook/useAuth';
 import { frontendErrorMessage } from '../helpers/backendError';
 
-function LoginForm() {
+function LoginForm({ onSuccess }) {
   const [errorMessage, setErrorMessage] = useState('');
   const {
     register,
@@ -15,7 +15,6 @@ function LoginForm() {
   } = useForm({ defaultValues: { username: '', password: '' } });
 
   const navigate = useNavigate();
-
   const { singin } = useAuth();
 
   const onValid = async (formData) => {
@@ -28,7 +27,18 @@ function LoginForm() {
         return;
       }
 
-      navigate('/admin/home');
+      // --- MODIFICACIÓN 1: Lógica flexible ---
+      if (onSuccess) {
+        // Si estamos en un modal, simplemente lo cerramos
+        onSuccess();
+      } else {
+        // Si estamos en la página de login, navegamos según el rol
+        if (localStorage.getItem('role') === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
+      }
     } catch (error) {
       if (error?.response?.data?.code) {
         setErrorMessage(frontendErrorMessage[error?.response?.data?.code]);
@@ -38,41 +48,48 @@ function LoginForm() {
     }
   };
 
+  // --- MODIFICACIÓN 2: Estilos dinámicos ---
+  // Si hay onSuccess (Modal), usamos estilos limpios.
+  // Si no (Página), usamos estilos de tarjeta (shadow, bg-white, etc).
+  const formClasses = onSuccess
+    ? 'flex flex-col gap-4' // Estilo para Modal (Simple)
+    : 'flex flex-col gap-6 sm:gap-4 bg-white p-6 sm:p-8 sm:w-md sm:rounded-lg sm:shadow-lg'; // Estilo para Página (Tarjeta)
+
   return (
-    <form className='
-        flex
-        flex-col
-        gap-20
-        bg-white
-        p-8
-        sm:w-md
-        sm:gap-4
-        sm:rounded-lg
-        sm:shadow-lg
-      '
-      onSubmit={handleSubmit(onValid)}
-    >
+    <form className={formClasses} onSubmit={handleSubmit(onValid)}>
       <Input
-        label='Usuario'
+        label="Usuario"
         {...register('username', {
           required: 'Usuario es obligatorio',
         })}
         error={errors.username?.message}
       />
       <Input
-        label='Contraseña'
+        label="Contraseña"
         {...register('password', {
           required: 'Contraseña es obligatorio',
         })}
-        type='password'
+        type="password"
         error={errors.password?.message}
       />
 
-      <Button type='submit'>Iniciar Sesión</Button>
-      <Button variant='secondary' onClick={() => alert('Debe impletar navegacion y pagina de registro')}>Registrar Usuario</Button>
-      {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
+      <Button type="submit">Iniciar Sesión</Button>
+
+      {/* --- MODIFICACIÓN 3: Navegación en registro --- */}
+      <Button
+        variant="secondary"
+        onClick={() => {
+          if (onSuccess) onSuccess(); // Cierra el modal si está abierto
+
+          navigate('/register');
+        }}
+      >
+        Registrar Usuario
+      </Button>
+
+      {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
     </form>
   );
-};
+}
 
 export default LoginForm;

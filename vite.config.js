@@ -22,5 +22,10 @@ export default ({ mode }) => {
       tailwindcss(),
       mkcert(),
     ],
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/setupTests.js',
+    },
   });
 };
