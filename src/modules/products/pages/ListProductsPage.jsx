@@ -158,31 +158,35 @@ function ListProductsPage() {
             <span className="text-sm text-gray-600">Buscando datos...</span>
           </div>
         ) : (
-          products.map((product) => (
-            <Card key={product.sku}>
-              <div className="flex flex-row justify-between">
-                <div>
-                  <h2 className="text-lg sm:text-xl font-semibold">
-                    {product.sku} - {product.name}
-                  </h2>
-                  <p className="text-sm sm:text-base text-gray-600 mt-2">
-                    Stock: {product.stockQuantity} - ${product.currentUnitPrice}{" "}
-                    -
-                    <span
-                      className={`ml-2 ${
-                        product.isActive ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      {product.isActive ? "Activado" : "Desactivado"}
-                    </span>
-                  </p>
+          products
+            .filter((product) => product.isActive === true)
+            .map((product) => (
+              <Card key={product.sku}>
+                <div className="flex flex-row justify-between">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-semibold">
+                      {product.sku} - {product.name}
+                    </h2>
+                    <p className="text-sm sm:text-base text-gray-600 mt-2">
+                      Stock: {product.stockQuantity} - $
+                      {product.currentUnitPrice} -
+                      <span
+                        className={`ml-2 ${
+                          product.isActive ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        {product.isActive ? "Activado" : "Desactivado"}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <Button onClick={() => handleOpenModal(product)}>
+                      Ver
+                    </Button>
+                  </div>
                 </div>
-                <div>
-                  <Button onClick={() => handleOpenModal(product)}>Ver</Button>
-                </div>
-              </div>
-            </Card>
-          ))
+              </Card>
+            ))
         )}
       </div>
 

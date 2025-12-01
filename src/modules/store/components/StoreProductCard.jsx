@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import Button from '../../shared/components/Button';
+import { useState } from "react";
+import Button from "../../shared/components/Button";
 // Asegúrate de que las rutas a las imágenes sean correctas en tu proyecto
-import diegoImage from '../../../assets/images/diego.png';
-import productImage from '../../../assets/images/product.png';
-import useCart from '../../cart/hooks/useCart';
+import diegoImage from "../../../assets/images/diego.png";
+import productImage from "../../../assets/images/product.png";
+import useCart from "../../cart/hooks/useCart";
 
 function StoreProductCard({ product }) {
   const [quantity, setQuantity] = useState(0);
   const { addItem } = useCart();
-  const isDiego = product.description === 'La del Diego';
+  const isDiego = product.description === "La del Diego";
 
   const handleIncrement = () => {
-    setQuantity(prev => prev + 1);
+    setQuantity((prev) => prev + 1);
   };
 
   const handleDecrement = () => {
-    setQuantity(prev => Math.max(0, prev - 1));
+    setQuantity((prev) => Math.max(0, prev - 1));
   };
 
   const handleAddToCart = () => {
     if (quantity < 1) {
       // Aquí está bien usar alert o mejor un mensaje de error en UI
-      alert('Debes seleccionar al menos 1 producto');
+      alert("Debes seleccionar al menos 1 producto");
 
       return;
     }
@@ -41,7 +41,6 @@ function StoreProductCard({ product }) {
 
     // 3. Opcional: Notificar SIN bloquear (ej: console.log o un toast personalizado)
     console.log(`${quantity} ${product.name} agregado(s) al carrito`);
-
   };
 
   return (
@@ -67,7 +66,9 @@ function StoreProductCard({ product }) {
             >
               -
             </button>
-            <span className="text-sm font-medium w-8 text-center">{quantity}</span>
+            <span className="text-sm font-medium w-8 text-center">
+              {quantity}
+            </span>
             <button
               onClick={handleIncrement}
               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold"

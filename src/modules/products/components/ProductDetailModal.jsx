@@ -169,17 +169,17 @@ function ProductDetailModal({ isOpen, onClose, productId }) {
             </form>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className=" text-semibold grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <p className="font-semibold text-gray-700">Nombre:</p>
+                  <p className="text-gray-700">Nombre:</p>
                   <p className="text-gray-900">{product.name}</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-700">SKU:</p>
+                  <p className="text-semibold text-gray-700">SKU:</p>
                   <p className="text-gray-900">{product.sku}</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-700">Código Interno:</p>
+                  <p className="text-semibold text-gray-700">Código Interno:</p>
                   <p className="text-gray-900">
                     {product.internalCode || "N/A"}
                   </p>
