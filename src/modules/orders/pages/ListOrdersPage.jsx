@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import Button from "../../shared/components/Button";
-import { listOrders } from "../services/listOrders";
-import OrderDetailModal from "../components/OrderDetailModal";
-import Pagination from "../../shared/components/Pagination";
+import { useEffect, useState } from 'react';
+import Button from '../../shared/components/Button';
+import { listOrders } from '../services/listOrders';
+import OrderDetailModal from '../components/OrderDetailModal';
+import Pagination from '../../shared/components/Pagination';
 
 function ListOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -56,7 +56,7 @@ function ListOrdersPage() {
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedOrders = filteredOrders.slice(
     startIndex,
-    startIndex + pageSize
+    startIndex + pageSize,
   );
 
   if (loading) return <p className="text-gray-600">Cargando ordenes...</p>;
@@ -132,17 +132,17 @@ function ListOrdersPage() {
               <div className="min-w-0 flex-1">
                 <h3 className="text-2xl">
                   <span className="font-bold text-gray-900">
-                    Número de Orden:{" "}
+                    Número de Orden:{' '}
                   </span>
                   <span className="font-normal text-gray-600">{order.id}</span>
                 </h3>
 
                 <h3 className="text-2xl">
                   <span className="font-bold text-gray-900">
-                    Nombre y Apellido:{" "}
+                    Nombre y Apellido:{' '}
                   </span>
                   <span className="font-normal text-gray-600">
-                    {order.customerFirstName + " " + order.customerLastName}
+                    {order.customerFirstName + ' ' + order.customerLastName}
                   </span>
                 </h3>
                 <h3 className="text-2xl">
@@ -152,7 +152,7 @@ function ListOrdersPage() {
                   </span>
                 </h3>
                 <p className="text-sm sm:text-base text-gray-500 mt-1">
-                  Estado:{" "}
+                  Estado:{' '}
                   <span className="font-medium text-purple-600">
                     {order.orderStatus}
                   </span>

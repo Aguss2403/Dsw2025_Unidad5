@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../../shared/components/Button";
-import Card from "../../shared/components/Card";
-import Pagination from "../../shared/components/Pagination";
-import ProductDetailModal from "../components/ProductDetailModal";
-import { getProducts } from "../services/list";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../shared/components/Button';
+import Card from '../../shared/components/Card';
+import Pagination from '../../shared/components/Pagination';
+import ProductDetailModal from '../components/ProductDetailModal';
+import { getProducts } from '../services/list';
 
 const productStatus = {
-  ALL: "all",
-  ENABLED: "enabled",
-  DISABLED: "disabled",
+  ALL: 'all',
+  ENABLED: 'enabled',
+  DISABLED: 'disabled',
 };
 
 function ListProductsPage() {
   const navigate = useNavigate();
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [status, setStatus] = useState(productStatus.ALL);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -44,7 +44,7 @@ function ListProductsPage() {
         searchTerm,
         status,
         pageNumber,
-        pageSize
+        pageSize,
       );
 
       if (error) throw error;
@@ -75,7 +75,7 @@ function ListProductsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold">Productos</h1>
           <Button
             className="w-min sm:w-auto rounded-2xl"
-            onClick={() => navigate("/admin/products/create")}
+            onClick={() => navigate('/admin/products/create')}
           >
             {/* Usar ícono en mobile si es necesario */}
             <span className="inline sm:hidden">
@@ -172,10 +172,10 @@ function ListProductsPage() {
                       {product.currentUnitPrice} -
                       <span
                         className={`ml-2 ${
-                          product.isActive ? "text-green-600" : "text-red-600"
+                          product.isActive ? 'text-green-600' : 'text-red-600'
                         }`}
                       >
-                        {product.isActive ? "Activado" : "Desactivado"}
+                        {product.isActive ? 'Activado' : 'Desactivado'}
                       </span>
                     </p>
                   </div>

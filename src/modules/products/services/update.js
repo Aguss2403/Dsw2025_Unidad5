@@ -10,5 +10,6 @@ export const updateProduct = async (product) => {
     stockQuantity: product.stockQuantity,
     isActive: product.isActive,
   });
+
   return { data: response.data, error: null };
 };

@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import useCart from "../../../cart/hooks/useCart";
-import Button from "../../../shared/components/Button";
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import useCart from '../../../cart/hooks/useCart';
+import Button from '../../../shared/components/Button';
 
 function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,6 +90,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
       </Link>
     );
   };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -98,21 +99,22 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
     };
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   // Prevenir scroll cuando el menú está abierto
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
@@ -128,7 +130,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
         <aside
           ref={menuRef}
           className={`fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "-translate-x-full"
+            isOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
           <div className="flex flex-col h-full">
@@ -184,7 +186,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
         <aside
           ref={menuRef}
           className={`fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "-translate-x-full"
+            isOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
           <div className="flex flex-col h-full">
@@ -197,14 +199,14 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
             <div className="p-4 flex flex-col gap-4">
               <div className="flex items-center gap-3 mb-2 p-2 bg-gray-50 rounded-lg">
                 <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-lg">
-                  {localStorage.getItem("name")?.charAt(0).toUpperCase() || "U"}
+                  {localStorage.getItem('name')?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-gray-900">
-                    {localStorage.getItem("name")}
+                    {localStorage.getItem('name')}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {localStorage.getItem("email")}
+                    {localStorage.getItem('email')}
                   </span>
                 </div>
               </div>
@@ -213,7 +215,7 @@ function UserMenuMobile({ isAuthenticated, onLogout, onLogin, onRegister }) {
 
               <div className="border-t border-gray-100 my-2"></div>
 
-              {localStorage.getItem("role") === "admin" && (
+              {localStorage.getItem('role') === 'admin' && (
                 <Link to="/admin/dashboard">
                   <Button className="w-full justify-center text-bold">
                     Dashboard

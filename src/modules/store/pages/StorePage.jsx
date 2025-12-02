@@ -6,11 +6,8 @@ import Pagination from "../../shared/components/Pagination";
 import { getStoreProducts } from "../services/storeService";
 
 function StorePage() {
-  // Leemos la URL para saber si hay búsqueda activa (?search=zapatillas)
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
-
-  // Estado local para productos y paginación
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,12 +15,10 @@ function StorePage() {
   const [totalItems, setTotalItems] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  // Función de carga de datos
   const fetchProducts = async (page = 1) => {
     setLoading(true);
-    // Pasamos el término de búsqueda (searchQuery) al servicio
     const { data } = await getStoreProducts(searchQuery, page, pageSize);
-    // Del objeto que devuelva, solo quiero la propiedad data
+
     if (data) {
       setProducts(data.items || []);
       setTotalItems(data.total || 0);

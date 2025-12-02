@@ -1,11 +1,11 @@
-import { useState } from "react";
-import Header from "./Header";
+import { useState } from 'react';
+import Header from './Header';
 
 function MainLayout({ children }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
-    console.log("Buscando:", searchTerm);
+    console.log('Buscando:', searchTerm);
   };
 
   return (

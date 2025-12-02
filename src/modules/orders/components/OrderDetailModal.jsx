@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import Modal from '../../shared/components/Modal';
-import { getOrderById } from '../services/getOrderById';
+import { useEffect, useState } from "react";
+import Modal from "../../shared/components/Modal";
+import { getOrderById } from "../services/getOrderById";
 
 function OrderDetailModal({ isOpen, onClose, orderId }) {
   const [order, setOrder] = useState(null);
@@ -25,7 +25,7 @@ function OrderDetailModal({ isOpen, onClose, orderId }) {
 
       fetchOrder();
     } else {
-      setOrder(null); // Reset when closed
+      setOrder(null);
     }
   }, [isOpen, orderId]);
 
@@ -33,7 +33,7 @@ function OrderDetailModal({ isOpen, onClose, orderId }) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Detalle de Orden #${orderId || ''}`}
+      title={`Detalle de Orden #${orderId || ""}`}
       maxWidth="max-w-6xl !important"
     >
       {loading && (
@@ -42,7 +42,7 @@ function OrderDetailModal({ isOpen, onClose, orderId }) {
 
       {error && (
         <p className="text-red-500 text-center">
-          Error al cargar la orden: {error.message || 'Error desconocido'}
+          Error al cargar la orden: {error.message || "Error desconocido"}
         </p>
       )}
 

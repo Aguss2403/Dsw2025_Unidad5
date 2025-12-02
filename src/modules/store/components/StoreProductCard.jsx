@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Button from "../../shared/components/Button";
-// Asegúrate de que las rutas a las imágenes sean correctas en tu proyecto
 import diegoImage from "../../../assets/images/diego.png";
 import productImage from "../../../assets/images/product.png";
 import useCart from "../../cart/hooks/useCart";
@@ -8,7 +7,7 @@ import useCart from "../../cart/hooks/useCart";
 function StoreProductCard({ product }) {
   const [quantity, setQuantity] = useState(0);
   const { addItem } = useCart();
-  const isDiego = product.description === "La del Diego";
+  const isDiego = product.description.toLowerCase().includes("diego");
 
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
@@ -20,9 +19,7 @@ function StoreProductCard({ product }) {
 
   const handleAddToCart = () => {
     if (quantity < 1) {
-      // Aquí está bien usar alert o mejor un mensaje de error en UI
       alert("Debes seleccionar al menos 1 producto");
-
       return;
     }
 
@@ -33,13 +30,8 @@ function StoreProductCard({ product }) {
       price: product.currentUnitPrice,
     };
 
-    // 1. Agregar el item
     addItem(productToAdd, quantity);
-
-    // 2. Resetear la cantidad inmediatamente
     setQuantity(0);
-
-    // 3. Opcional: Notificar SIN bloquear (ej: console.log o un toast personalizado)
     console.log(`${quantity} ${product.name} agregado(s) al carrito`);
   };
 

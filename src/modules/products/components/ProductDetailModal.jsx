@@ -32,7 +32,7 @@ function ProductDetailModal({ isOpen, onClose, productId }) {
         reset({
           ...data,
           isActive: data.isActive?.toString(),
-        }); // Reset form with fetched data
+        });
       }
 
       setLoading(false);
@@ -55,7 +55,7 @@ function ProductDetailModal({ isOpen, onClose, productId }) {
     reset({
       ...product,
       isActive: product.isActive?.toString(),
-    }); // Revert changes
+    });
   };
 
   const onValid = async (formData) => {
@@ -70,10 +70,10 @@ function ProductDetailModal({ isOpen, onClose, productId }) {
 
       if (error) throw error;
 
-      setProduct(data); // Update local state with response
+      setProduct(data);
       setIsEditing(false);
       alert("Producto actualizado exitosamente");
-      await fetchProduct(); // Refresh data to be sure
+      await fetchProduct();
     } catch (error) {
       console.error("Error updating product:", error);
       alert("Error al actualizar el producto");

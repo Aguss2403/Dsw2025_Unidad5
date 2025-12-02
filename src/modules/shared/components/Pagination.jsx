@@ -7,7 +7,6 @@ const Pagination = ({
   pageSize,
   setPageSize,
 }) => {
-  // Generar números de página
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -78,7 +77,6 @@ const Pagination = ({
         )}
       </div>
       <div>
-        {/* Selector de tamaño de página */}
         <span className="text-sm text-gray-600">Items por Página </span>
         {pageSize && setPageSize && (
           <select

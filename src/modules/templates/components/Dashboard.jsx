@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
-import useAuth from "../../auth/hook/useAuth";
-import Button from "../../shared/components/Button";
+import { useState, useEffect, useRef } from 'react';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import useAuth from '../../auth/hook/useAuth';
+import Button from '../../shared/components/Button';
 
 function Dashboard() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -17,21 +17,22 @@ function Dashboard() {
     };
 
     if (openMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [openMenu]);
 
   // Block scrolling when menu is open
   useEffect(() => {
     if (openMenu) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [openMenu]);
 
@@ -46,24 +47,24 @@ function Dashboard() {
 
   const logout = () => {
     singout();
-    navigate("/login");
+    navigate('/login');
   };
 
   const navigateToStore = () => {
-    navigate("../");
+    navigate('../');
   };
 
   const getLinkStyles = ({ isActive }) =>
     `
       pl-4 w-full block  pt-4 pb-4 rounded-4xl transition hover:bg-gray-100
-      ${isActive ? "bg-purple-200 hover:bg-purple-100 " : ""}
+      ${isActive ? 'bg-purple-200 hover:bg-purple-100 ' : ''}
     `;
 
   const renderLogoutButton = (mobile = false) => (
     <Button
       variant="secondary"
       className={`text-red-600 ${
-        mobile ? "block w-full sm:hidden" : "hidden sm:block"
+        mobile ? 'block w-full sm:hidden' : 'hidden sm:block'
       }`}
       onClick={logout}
     >
@@ -73,7 +74,7 @@ function Dashboard() {
 
   const renderStoreButton = (mobile = false) => (
     <Button
-      className={`${mobile ? "block w-full sm:hidden" : "hidden sm:block"}`}
+      className={`${mobile ? 'block w-full sm:hidden' : 'hidden sm:block'}`}
       onClick={navigateToStore}
     >
       Tienda
@@ -108,7 +109,7 @@ function Dashboard() {
 
         {/* 2. Elemento Derecha: Contenedor para los botones juntos */}
         <div className="flex items-center gap-2">
-          {" "}
+          {' '}
           {/* gap-2 separa los botones entre sí */}
           {renderStoreButton()}
           {renderLogoutButton()}
@@ -138,12 +139,12 @@ function Dashboard() {
       {openMenu && (
         <div
           className="
-            fixed 
-            inset-0 
-            z-10 
+            fixed
+            inset-0
+            z-10
             sm:hidden
-            backdrop-blur-sm   
-            bg-black/5        
+            backdrop-blur-sm
+            bg-black/5
           "
           onClick={() => setOpenMenu(false)}
         />
@@ -159,7 +160,7 @@ function Dashboard() {
             w-64
             p-6
             transition-transform duration-300 ease-in-out
-            ${openMenu ? "translate-x-0" : "-translate-x-full"}
+            ${openMenu ? 'translate-x-0' : '-translate-x-full'}
             z-20
             shadow-lg
             flex

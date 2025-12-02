@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../../../shared/components/Button";
-import CartIcon from "./CartIcon";
+import { Link, useNavigate } from 'react-router-dom';
+import Button from '../../../shared/components/Button';
+import CartIcon from './CartIcon';
 
 function UserMenuDesktop({
   isAuthenticated,
@@ -32,12 +32,12 @@ function UserMenuDesktop({
       </Link>
 
       <span className="text-sm font-medium text-gray-700">
-        Hola, {localStorage.getItem("name")}
+        Hola, {localStorage.getItem('name')}
       </span>
 
       {isAdmin && (
         <Button
-          onClick={() => navigate("/admin/dashboard")}
+          onClick={() => navigate('/admin/dashboard')}
           className="bg-purple-100 text-purple-700 border-purple-200 hover:bg-purple-200"
         >
           Dashboard

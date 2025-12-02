@@ -1,5 +1,5 @@
-import { CartContext } from "../../../cart/context/CartContext";
-import useCart from "../../../cart/hooks/useCart";
+import { CartContext } from '../../../cart/context/CartContext';
+import useCart from '../../../cart/hooks/useCart';
 
 function CartIcon() {
   const { cartItems } = useCart();
