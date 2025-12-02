@@ -159,7 +159,6 @@ function ListProductsPage() {
           </div>
         ) : (
           products
-            .filter((product) => product.isActive === true)
             .map((product) => (
               <Card key={product.sku}>
                 <div className="flex flex-row justify-between">
