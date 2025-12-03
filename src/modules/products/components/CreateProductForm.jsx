@@ -33,12 +33,25 @@ function CreateProductForm() {
       alert("Producto creado exitosamente");
       navigate("/admin/products");
     } catch (error) {
-      if (error.response?.data?.detail) {
-        const errorMessage = frontendErrorMessage[error.response.data.code];
+      // Obtenemos la respuesta de error del backend
+      const serverError = error.response?.data; 
 
-        setErrorBackendMessage(errorMessage);
-      } else {
-        setErrorBackendMessage("Contactar a Soporte");
+      console.log("---- DEBUG ERROR ----");
+      console.log("Objeto error completo:", error);
+      console.log("Respuesta del servidor (data):", serverError);
+      console.log("Código recibido:", serverError?.code);
+      console.log("Tipo de dato del código:", typeof serverError?.code);
+      
+      const mappedMessage = frontendErrorMessage[serverError?.code];
+
+      if (mappedMessage) {
+        setErrorBackendMessage(mappedMessage);
+      } 
+      else if (serverError?.message) {
+        setErrorBackendMessage(serverError.message);
+      }
+      else {
+        setErrorBackendMessage("Ocurrió un error inesperado. Contactar a soporte.");
       }
     }
   };
@@ -83,16 +96,17 @@ function CreateProductForm() {
           error={errors.price?.message}
           type="number"
           {...register("price", {
-            min: {
-              value: 0,
-              message: "No puede tener un precio negativo",
-            },
+            required: "El precio es requerido",
+            validate: (value) => parseFloat(value) > 0 || "El precio debe ser mayor a 0" 
           })}
         />
+        
         <Input
           label="Stock"
           error={errors.stock?.message}
+          type="number"
           {...register("stock", {
+            required: "El stock es requerido",
             min: {
               value: 0,
               message: "No puede tener un stock negativo",
